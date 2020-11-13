@@ -7,8 +7,7 @@ Created on Fri Nov  6 11:59:30 2020
 import numpy as np
 import pygame as pg
 from random import randint
-import body
-import io
+import io_
 import physics
 import gui
 
@@ -43,7 +42,7 @@ class Manager():
         съедает и обрабатывает информацию из файла
         """
 
-    def process(self):
+    def process(self, event, screen):
         """
         итерируемый код: перемещение, обновление, цифер, рис, тык на кнопки
         """
@@ -53,7 +52,7 @@ class Manager():
         """
         метод перемещения всех планет и обновления их параметров
         """
-        body.Body.move()
+        physics.Body.move()
 
     def handle_events(self, events):
         gui.Button.handle_events()
@@ -64,7 +63,7 @@ class Manager():
         """
         отрисовка всех объектов на screen
         """
-        body.Body.draw()
+        physics.Body.draw()
         gui.Button.draw()
 
 

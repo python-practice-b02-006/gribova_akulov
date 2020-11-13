@@ -7,7 +7,6 @@ Created on Fri Nov  6 11:59:30 2020
 import numpy as np
 import pygame as pg
 from random import randint
-import physics
 
 
 BLACK = (0, 0, 0)

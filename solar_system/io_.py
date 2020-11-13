@@ -16,6 +16,7 @@ def take_info():
     
 
 def save_info():
+    global A
     input = open('input.txt','w')
     input = close()
     for i in range(len(A)):
