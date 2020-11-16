@@ -4,7 +4,7 @@ Created on Fri Nov  6 11:59:30 2020
 
 @author: Nika
 """
-
+A=[]
 def take_info():
     global A
     input = open('input.txt', 'r')
@@ -18,8 +18,11 @@ def take_info():
 def save_info():
     global A
     input = open('input.txt','w')
-    input = close()
+    input.close()
     for i in range(len(A)):
         input = open('input.txt','a')
         print(*A[i], file=input)
         input.close()
+    return A
+#print(take_info())
+#print(save_info())

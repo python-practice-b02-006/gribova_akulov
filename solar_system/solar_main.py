@@ -11,7 +11,7 @@ import io_
 import physics
 import gui
 
-SIZE = (728, 410)
+SIZE = (1020, 640)
 A=[]
 
 BLACK = (0, 0, 0)
@@ -29,62 +29,22 @@ COLORS = [LSALMON, PEACH, LEMONE, SKYBLUE, TOMATO, GREY, CADET, BROWN]
 
 pg.init()
 
-class Manager():
-    def __init__(self):      
-        """
-        конструктор
-        """
-        pass
 
-    def file_before(self, file_from):
-        A = io.take_info()       
-        """
-        съедает и обрабатывает информацию из файла
-        """
-
-    def process(self, event, screen):
-        """
-        итерируемый код: перемещение, обновление, цифер, рис, тык на кнопки
-        """
-        pass
-
-    def move_obj(self):
-        """
-        метод перемещения всех планет и обновления их параметров
-        """
-        physics.Body.move()
-
-    def handle_events(self, events):
-        gui.Button.handle_events()
-                    
-    
-    def draw(self, screen):
-        
-        """
-        отрисовка всех объектов на screen
-        """
-        physics.Body.draw()
-        gui.Button.draw()
-
-
-screen = pg.display.set_mode(SIZE)
-pg.display.set_caption("Now it's my work")
 clock = pg.time.Clock()
+balls = physics.Balls()
+screen = pg.display.set_mode((1020, 640))
 
-mgr = Manager()
-
-done = False
-FPS=20
-
-while not done:
-    screen.fill(BLACK)
-    clock.tick(FPS)
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            finished = True 
-    clock.tick(30)
-    done = mgr.process(pg.event.get(), screen)
-    io.save_info()
+FPS = 5
+finished = False
+while not finished:
+    clock.tick(1000)
+    for event in pg.event.get():   
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                finished = True
+    screen.fill((125,125,125))
+    balls.iterate(0.01)#Артём, чтобы формулы работали корректно, нужен очень маленький интервал времени. и они вполне работают при таком
+    balls.draw(screen)
     pg.display.update()
     
     
