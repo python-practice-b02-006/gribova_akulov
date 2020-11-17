@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Nov  6 11:59:30 2020
 
-@author: Nika
-"""
 import numpy as np
 import pygame as pg
 from random import randint
@@ -29,23 +24,31 @@ COLORS = [LSALMON, PEACH, LEMONE, SKYBLUE, TOMATO, GREY, CADET, BROWN]
 
 pg.init()
 
+pg.mixer.init()
+pg.mixer.music.load('pups.mp3')
+pg.mixer.music.play()
 
 clock = pg.time.Clock()
 balls = physics.Balls()
+button = gui.Button()
 screen = pg.display.set_mode((1020, 640))
 
 FPS = 5
 finished = False
+
 while not finished:
     clock.tick(1000)
-    for event in pg.event.get():   
+    for event in pg.event.get():
+
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 finished = True
-    screen.fill((125,125,125))
-    balls.iterate(0.01)#Артём, чтобы формулы работали корректно, нужен очень маленький интервал времени. и они вполне работают при таком
+    screen.fill((125, 125, 125))
+
+    balls.iterate(0.01)
     balls.draw(screen)
+    button.handle_events(pg.event.get())
+    button.draw(screen)
     pg.display.update()
-    
     
 pg.quit()
