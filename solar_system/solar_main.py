@@ -33,19 +33,25 @@ balls = physics.Balls()
 button = gui.Button()
 screen = pg.display.set_mode((1020, 640))
 
-FPS = 5
+FPS = 30
 finished = False
 
 while not finished:
-    clock.tick(1000)
+
     for event in pg.event.get():
 
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 finished = True
     screen.fill((125, 125, 125))
+    k = button.time_()
+    if k == 0:
+        clock.tick(10000)
+        balls.iterate(0)
+    else:
+        balls.iterate(0.01)
+        clock.tick(1000 * k)
 
-    balls.iterate(0.01)
     balls.draw(screen)
     button.handle_events(pg.event.get())
     button.draw(screen)

@@ -35,12 +35,12 @@ class Button():
             else:
                 self.coord[0] = mouse_pos[0]
 
-    def time(self):
+    def time_(self):
         if self.active == 0:
             self.time = 0
         else:
-            self.time = 10 ** ((self.coord[0] - 510) / 200)
-
+            self.time = 10000 ** ((self.coord[0]) / 510 - 1)
+        return self.time
 
 
     def handle_events(self, events):
