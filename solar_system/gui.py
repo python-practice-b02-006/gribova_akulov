@@ -39,7 +39,7 @@ class Button():
         if self.active == 0:
             self.time = 0
         else:
-            self.time = 10000 ** ((self.coord[0]) / 510 - 1)
+            self.time = 100000 ** ((self.coord[0]) / 510 - 1)
         return self.time
 
 
