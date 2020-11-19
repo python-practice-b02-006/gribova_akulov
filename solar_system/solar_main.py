@@ -40,8 +40,7 @@ while not finished:
 
     for event in pg.event.get():
 
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_ESCAPE:
+        if event.type == pg.QUIT:
                 finished = True
     screen.fill((125, 125, 125))
     k = button.time_()
