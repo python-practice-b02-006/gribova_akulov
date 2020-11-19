@@ -23,6 +23,6 @@ def save_info():
         input = open('input.txt','a')
         print(*A[i], file=input)
         input.close()
-    return A
+
 #print(take_info())
 #print(save_info())
