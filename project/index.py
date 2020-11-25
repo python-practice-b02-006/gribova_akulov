@@ -8,32 +8,53 @@ import numpy as np
 import os
 import pygame as pg
 from random import randint
+import cv2
 
 pg.init()
 SIZE = (1020, 600)
 A=[]
 
-'''clock = pg.time.Clock()
-screen = pg.display.set_mode((1020, 640))
 
-movie = pg.movie.Movie('start.mpg')
-mrect = pg.Rect(0,0,140,113)
-movie.set_display(screen, mrect.move(65, 150))
-movie.set_volume(1)
-movie.play()
-SC_IMG = pg.image.load("amongus.jpg")
-screen.blit(SC_IMG, (-20, 0))
 
-FPS = 30
-finished = False
 
-while not finished:
+
+
+stream = 'C:\pythonlessons\project\start2.avi'
+
+# open stream
+cap = cv2.VideoCapture(stream)
+ret, img = cap.read()
+
+
+img = cv2.transpose(img)
+
+print('shape:', img.shape)
+
+pg.init()
+
+# create window with the same size as frame
+screen = pg.display.set_mode((img.shape[0], img.shape[1]))
+pg.mixer.music.load('start_music.mp3')
+pg.mixer.music.set_volume(0.5)
+pg.mixer.music.play()
+
+running = True
+while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
-                finished = True
-    
-    clock.tick(10)
-    pg.display.update()'''
+            running = False
+
+    # read one frame and check if there was no problem
+    ret, img = cap.read()
+    if not ret:
+        running = False
+        break
+    else:
+        img = cv2.transpose(img)
+
+        pg.surfarray.blit_array(screen, img)
+
+    pg.display.flip()
 
 pg.mixer.music.load('adventure_music.mp3')
 pg.mixer.music.set_volume(0.5)
