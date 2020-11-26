@@ -17,9 +17,11 @@ A=[]
 
 
 
+pg.mixer.music.load('start_music.mp3')
+pg.mixer.music.set_volume(0.5)
+pg.mixer.music.play()
 
-
-stream = 'C:\pythonlessons\project\start2.avi'
+stream = 'start2.avi'
 
 # open stream
 cap = cv2.VideoCapture(stream)
@@ -34,9 +36,7 @@ pg.init()
 
 # create window with the same size as frame
 screen = pg.display.set_mode((img.shape[0], img.shape[1]))
-pg.mixer.music.load('start_music.mp3')
-pg.mixer.music.set_volume(0.5)
-pg.mixer.music.play()
+
 
 running = True
 while running:
