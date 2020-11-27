@@ -1,19 +1,54 @@
 import pygame as pg
 import numpy as np
 from random import randint
+import cv2
 
 SCREEN_SIZE = (1200, 600)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (130, 130, 130)
 RED = (255, 0, 0)
-YELLOW = (90, 0, 157)
-BROWN = (150, 75, 0)
+YELLOW = (128, 0, 0)
+BROWN = (160, 82, 45) #150, 75, 0
 
 
 screen = pg.display.set_mode(SCREEN_SIZE)
 pg.init()
 seq = 120 * 60 * 10
+
+
+pg.mixer.music.load('start_music.mp3')
+pg.mixer.music.set_volume(0.5)
+pg.mixer.music.play()
+stream = 'start2.avi'
+# open stream
+cap = cv2.VideoCapture(stream)
+ret, img = cap.read()
+img = cv2.transpose(img)
+print('shape:', img.shape)
+# create window with the same size as frame
+screen = pg.display.set_mode((img.shape[0], img.shape[1]))
+running = True
+while running:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            running = False
+    # read one frame and check if there was no problem
+    ret, img = cap.read()
+    if not ret:
+        running = False
+        break
+    else:
+        img = cv2.transpose(img)
+        pg.surfarray.blit_array(screen, img)
+    pg.display.flip()
+
+
+
+
+pg.mixer.music.load('adventure_music.mp3')
+pg.mixer.music.set_volume(0.5)
+pg.mixer.music.play()
 
 
 class Timer():
