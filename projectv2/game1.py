@@ -29,6 +29,8 @@ COLORS = [LSALMON, PEACH, LEMONE, SKYBLUE, TOMATO, GREY, CADET, BROWN]
 
 pg.init()
 
+pg.mixer.music.load('fake_id.mp3')
+pg.mixer.music.play()
 
 class Table():
     def __init__(self, t_destr=0, b_used=0):
