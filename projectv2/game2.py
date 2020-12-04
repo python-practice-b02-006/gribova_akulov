@@ -146,6 +146,7 @@ figure = Figure(dots=[[75, 75], [150, 0], [225, 75]])
 
 while not done:
     clock.tick(30)
+    
     pg.display.flip()
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -153,8 +154,16 @@ while not done:
     rocket1.draw(screen,1)
     rocket2.draw(screen,2)
     rocket3.draw(screen,3)
+    screen.blit(SC_IMG, (0, 0))
+    screen.blit(SC_IMG, (337, 0))
+    screen.blit(SC_IMG, (674, 0))
+    screen.blit(SC_IMG, (1011, 0))
     figure.handle_events(pg.event.get())
+    rocket1.draw(screen,1)
+    rocket2.draw(screen,2)
+    rocket3.draw(screen,3)
     figure.draw(screen)
+    
     
     
 pg.quit()
