@@ -12,10 +12,10 @@ def mediana(a, b, c):
     m_a = int(np.sqrt(2*(b**2+c**2)-a**2)/3)
     m_b = int(np.sqrt(2*(a**2+c**2)-b**2)/3)
     m_c = int(np.sqrt(2*(b**2+a**2)-c**2)/3)
-    return min(m_a+1, m_b+1, m_c+1)/1.5
+    return min(m_a+1, m_b+1, m_c+1)
 
 SIZE = (1200, 600)
-
+b = ['ne_zanyato']
 BLACK = (0, 0, 0)
 LSALMON = (255, 160, 122)
 PEACH = (255, 218, 185)
@@ -95,8 +95,7 @@ class Figure():
         if len(dots) == 4:
             self.rad = int(min(np.sqrt((dots[3][0]-dots[1][0])**2+(dots[1][1]-dots[3][1])**2),
                            np.sqrt((dots[0][0]-dots[2][0])**2+(dots[0][1]-dots[2][1])**2)))
-            self.rad //= 1.5
-        print(self.coord, self.rad)
+            self.rad //= 1.41
         self.time = 1
 
     def convert_dots(self):
@@ -107,25 +106,37 @@ class Figure():
     def draw(self, screen, this_figure):
         pg.draw.polygon(screen, self.color,  this_figure.convert_dots())
 
-    def movement(self, mouse_pos):
+    def movement(self, mouse_pos, k):
+        global b
         if ((mouse_pos[0] - self.coord[0]) ** 2 + (mouse_pos[1] - self.coord[1]) ** 2) < self.rad ** 2:      
-            for i in range(len(self.dots)):
-                self.norm_dots[i][0] += - self.coord[0] + mouse_pos[0]
-                self.norm_dots[i][1] += - self.coord[1] + mouse_pos[1]
-            self.coord = mouse_pos
+            if b == ['ne_zanyato']:
+                b=[k]
+            elif len(b) !=  1:
+                b.pop()
+            elif b[0] != k: 
+                b.append(k)
+            if b[0] == k: 
+                for i in range(len(self.dots)):
+                    self.norm_dots[i][0] += - self.coord[0] + mouse_pos[0]
+                    self.norm_dots[i][1] += - self.coord[1] + mouse_pos[1]
+                self.coord = mouse_pos
 
-    def handle_events(self, events):
+
+    def handle_events(self, events, k):
+        global b
         for event in events:
+            if event.type == pg.MOUSEBUTTONUP:
+                b = ['ne_zanyato']
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     mouse_pos = pg.mouse.get_pos()
-                    
-            elif event.type == pg.MOUSEBUTTONUP:
-                pass
+
         pressed = pg.mouse.get_pressed()
         mouse_pos = pg.mouse.get_pos()
         if pressed[0]:
-            self.movement(mouse_pos)
+            self.movement(mouse_pos, k)
+
+            
 
 class Match():
     def __init__():
@@ -158,7 +169,7 @@ class Manager():
             if event.type == pg.QUIT:
                 done = True
         for i in range(len(self.dots_figure)):
-            self.figures[i].handle_events(events)
+            self.figures[i].handle_events(events, i)
         return done
         
 dots_figure =[[[180, 588], [255, 513], [330, 588]],
@@ -168,7 +179,7 @@ dots_figure =[[[180, 588], [255, 513], [330, 588]],
               [[120, 496], [220, 496], [220, 371]],
               [[117, 512], [167, 512], [167, 562], [117, 562]],
               [[304, 556], [379, 506], [379, 456], [304, 506]],
-              [[275, 402], (350, 402), (350, 452)],
+              [[275, 402], [350, 402], [350, 452]],
               [[371, 118], [471, 118], [471, 18]],
 
               [[670, 162], [570, 162], [570, 62]],
@@ -190,31 +201,6 @@ dots_figure =[[[180, 588], [255, 513], [330, 588]],
               [[822, 321], [822, 396], [897, 346], [897, 321]],
               [[834, 420], [909, 370], [909, 495]],
               [[922, 464], [922, 439], [1022, 439], [1022, 589]]]
-'''
-
-[[[25, 465], [100, 390], [175, 465]], [[275, 485], [200, 435], [200, 485]],
-               [[75, 75], [125, 200], [225,75]], [[75, 75], [125, 200], [75, 200]], 
-               [[125, 200], [225, 200], [225,75]], [[125,200], [175,200], [175,250], [125, 250]],
-               [[50, 300], [125, 250], [125,200], [50,250]],
-               [[175, 250], [250, 250], [250,300]],
-               
-               [[450, 100], [550,100], [550,0]], [[650, 100], [550,100], [550,0]], 
-               [[450, 100], [550,100], [550,200]], [[650, 100], [550,100], [550,200]],
-               [[450, 225], [500, 250], [550, 200], [500, 150]],
-               [[450,225], [450,300], [500, 250]], [[500,250], [550,300], [550, 200]],
-               [[550, 300], [600,250], [550, 250]], [[550, 200], [550, 250], [600,250], [600,150]],
-               [[600,250], [600,150], [650, 225], [650, 300]]] 
-[[0 ,0], [100, 0], [0, 100]],
-              [[50,50], [100, 0], [225, 0], [175, 50]],
-              [[50,50], [175, 50], [175,150], [50, 150]],
-              [[50, 50],[0, 100], [0,150], [50, 150]],
-              [[175,75], [175, 50], [225, 0], [300, 75]],
-              [[175, 75], [175, 175], [300, 175]],
-              [[0, 150], [0, 225], [75, 175], [75, 150]],
-              [[0, 225], [75, 175], [75,300]],
-              [[75, 175], [75, 150], [175, 150], [175, 300]]]
-'''
-
 
 
 
