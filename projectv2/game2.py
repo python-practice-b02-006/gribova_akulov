@@ -215,7 +215,7 @@ class Manager():
                     screen.blit(surf1, (100, 450))
                 if i ==1:
                     surf2 = font_1.render("AWESOME!!", False, GREY)              
-                    screen.blit(surf2, (450, 250))
+                    screen.blit(surf2, (450, 140))
                 if i == 2:
                     surf3 = font_1.render("EXCITING!", False, GREY)
                     screen.blit(surf3, (850, 450))
