@@ -16,6 +16,38 @@ def mediana(a, b, c):
 
 SIZE = (1200, 600)
 b = ['ne_zanyato']
+
+dots_figure =[[[180, 588], [255, 513], [330, 588]],
+              [[100, 569], [25, 519], [25, 569]],
+              [[13, 392], [63, 517], [163, 392]],
+              [[243, 371], [293, 496], [243, 496]],
+              [[120, 496], [220, 496], [220, 371]],
+              [[117, 512], [167, 512], [167, 562], [117, 562]],
+              [[304, 556], [379, 506], [379, 456], [304, 506]],
+              [[275, 402], [350, 402], [350, 452]],
+              [[371, 118], [471, 118], [471, 18]],
+
+              [[670, 162], [570, 162], [570, 62]],
+              [[567, 177], [667, 177], [667, 277]],
+              [[785, 176], [685, 176], [685, 276]],
+              [[432, 197], [482, 222], [532, 172], [482, 122]],
+              [[488, 19], [488, 94], [538, 44]],
+              [[502, 112], [552, 162], [552, 62]],
+              [[675, 86], [725, 36], [675, 36]],
+              [[677, 107], [677, 157], [727, 157], [727, 57]],
+              [[745, 111], [745, 11], [795, 86], [795, 161]],
+                           
+              [[1050, 465], [1150, 465], [1050, 565]],
+              [[766, 577], [816, 527], [941, 527], [891, 577]],
+              [[1049, 337], [1174, 337], [1174, 437], [1049, 437]],
+              [[1169, 481], [1119, 531], [1119, 581], [1169, 581]],
+              [[918, 418], [918, 393], [968, 343], [1043, 418]],
+              [[1048, 225], [1048, 325], [1173, 325]],
+              [[822, 321], [822, 396], [897, 346], [897, 321]],
+              [[834, 420], [909, 370], [909, 495]],
+              [[922, 464], [922, 439], [1022, 439], [1022, 589]]]
+A=[[0,0]]*len(dots_figure)
+
 BLACK = (0, 0, 0)
 LSALMON = (255, 160, 122)
 PEACH = (255, 218, 185)
@@ -30,16 +62,18 @@ GREY = (130, 130, 130)
 COLORS = [LSALMON, PEACH, LEMONE, SKYBLUE, TOMATO, GREY, CADET, BROWN]
 
 pg.init()
+pg.font.init()
 
+
+font_1 = pg.font.SysFont("serif", 60)
 screen = pg.display.set_mode(SIZE)
 pg.display.set_caption("Now it's my work")
 clock = pg.time.Clock()
 
-
 done = False
-'''
-pg.mixer.music.load('bisnesss.mp3')
-pg.mixer.music.play()'''
+
+pg.mixer.music.load('felicia.mp3')
+pg.mixer.music.play()
 
 SC_IMG = pg.image.load("night_forest.jpg")
 screen.blit(SC_IMG, (0, 0))
@@ -107,7 +141,7 @@ class Figure():
         pg.draw.polygon(screen, self.color,  this_figure.convert_dots())
 
     def movement(self, mouse_pos, k):
-        global b
+        global b, A
         if ((mouse_pos[0] - self.coord[0]) ** 2 + (mouse_pos[1] - self.coord[1]) ** 2) < self.rad ** 2:      
             if b == ['ne_zanyato']:
                 b=[k]
@@ -120,6 +154,7 @@ class Figure():
                     self.norm_dots[i][0] += - self.coord[0] + mouse_pos[0]
                     self.norm_dots[i][1] += - self.coord[1] + mouse_pos[1]
                 self.coord = mouse_pos
+                A[k] = self.coord
 
 
     def handle_events(self, events, k):
@@ -134,13 +169,24 @@ class Figure():
         pressed = pg.mouse.get_pressed()
         mouse_pos = pg.mouse.get_pos()
         if pressed[0]:
-            self.movement(mouse_pos, k)
+            self.movement(mouse_pos, k)          
 
-            
-
-class Match():
-    def __init__():
-        pass
+def match(centers_match,k):
+    global A
+    z = [0,0,0]
+    for i in range(len(centers_match)):
+        if len(centers_match)==8:
+            if (centers_match[i][0] - A[i][0])**2 + (centers_match[i][1] - A[i][1])**2 < 200:
+                z[0] += 1
+        if len(centers_match) == 10:
+            if (centers_match[i][0] - A[8+i][0])**2 + (centers_match[i][1] - A[8+i][1])**2 < 200:
+                z[1] += 1
+        if len(centers_match) == 9:
+            if (centers_match[i][0] - A[18+i][0])**2 + (centers_match[i][1] - A[18+i][1])**2 < 200:
+                z[2] += 1
+    if z[k] == len(centers_match):
+        return True
+    else: return False
 
 class Manager():
     def __init__(self, figcoords):
@@ -149,7 +195,7 @@ class Manager():
         for i in range(len(self.dots_figure)):
             self.figures.append(Figure(dots=self.dots_figure[i]))
             
-    def draw(self, screen):
+    def draw(self, screen, centers_match):
         rocket1.draw(screen,1)
         rocket2.draw(screen,2)
         rocket3.draw(screen,3)
@@ -161,7 +207,18 @@ class Manager():
         rocket2.draw(screen,2)
         rocket3.draw(screen,3)
         for i in range(len(self.dots_figure)):
-            self.figures[i].draw(screen, self.figures[i]) 
+            self.figures[i].draw(screen, self.figures[i])
+        for i in range(len(centers_match)):
+            if match(centers_match[i], i):
+                if i == 0:
+                    surf1 = font_1.render("GREAT!", False, GREY)
+                    screen.blit(surf1, (100, 450))
+                if i ==1:
+                    surf2 = font_1.render("AWESOME!!", False, GREY)              
+                    screen.blit(surf2, (450, 250))
+                if i == 2:
+                    surf3 = font_1.render("EXCITING!", False, GREY)
+                    screen.blit(surf3, (850, 450))
             
     def handle_events(self, events):
         done = False
@@ -171,39 +228,17 @@ class Manager():
         for i in range(len(self.dots_figure)):
             self.figures[i].handle_events(events, i)
         return done
+
+centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
+                 [197,273],  [136,297], [277,318]],
+
+                 [[564, 317], [632, 315], [565, 380], [633, 379], [548, 453], 
+                  [516, 506], [581, 498], [614, 517], [622, 462], [674, 481]],
+                 
+                 [[882, 82], [986, 74], [961, 150], [871, 160], [1067, 99],
+                  [1065, 190], [887, 223], [899, 281], [974, 244]]]
+                 
         
-dots_figure =[[[180, 588], [255, 513], [330, 588]],
-              [[100, 569], [25, 519], [25, 569]],
-              [[13, 392], [63, 517], [163, 392]],
-              [[243, 371], [293, 496], [243, 496]],
-              [[120, 496], [220, 496], [220, 371]],
-              [[117, 512], [167, 512], [167, 562], [117, 562]],
-              [[304, 556], [379, 506], [379, 456], [304, 506]],
-              [[275, 402], [350, 402], [350, 452]],
-              [[371, 118], [471, 118], [471, 18]],
-
-              [[670, 162], [570, 162], [570, 62]],
-              [[567, 177], [667, 177], [667, 277]],
-              [[785, 176], [685, 176], [685, 276]],
-              [[432, 197], [482, 222], [532, 172], [482, 122]],
-              [[488, 19], [488, 94], [538, 44]],
-              [[502, 112], [552, 162], [552, 62]],
-              [[675, 86], [725, 36], [675, 36]],
-              [[677, 107], [677, 157], [727, 157], [727, 57]],
-              [[745, 111], [745, 11], [795, 86], [795, 161]],
-                           
-              [[1050, 465], [1150, 465], [1050, 565]],
-              [[766, 577], [816, 527], [941, 527], [891, 577]],
-              [[1049, 337], [1174, 337], [1174, 437], [1049, 437]],
-              [[1169, 481], [1119, 531], [1119, 581], [1169, 581]],
-              [[918, 418], [918, 393], [968, 343], [1043, 418]],
-              [[1048, 225], [1048, 325], [1173, 325]],
-              [[822, 321], [822, 396], [897, 346], [897, 321]],
-              [[834, 420], [909, 370], [909, 495]],
-              [[922, 464], [922, 439], [1022, 439], [1022, 589]]]
-
-
-
 
 mgr = Manager(dots_figure)
 
@@ -213,8 +248,8 @@ rocket3 = Schedule(3)
 #figure = Figure(dots=[[275, 485], [200, 435], [200, 485]])
 
 while not done:
-    clock.tick(30)
-    mgr.draw(screen)
+    clock.tick(10000)
+    mgr.draw(screen, centers_match)
     done = mgr.handle_events(pg.event.get())
     pg.display.flip()
     
