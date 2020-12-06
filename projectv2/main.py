@@ -6,7 +6,7 @@ import cv2
 SCREEN_SIZE = (1200, 600)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-GRAY = (130, 130, 130)
+GRAY = (255, 250, 205)
 RED = (255, 0, 0)
 YELLOW = (128, 0, 0)
 BROWN = (160, 82, 45) #150, 75, 0
@@ -14,6 +14,7 @@ BROWN = (160, 82, 45) #150, 75, 0
 
 screen = pg.display.set_mode(SCREEN_SIZE)
 pg.init()
+k = 0
 seq = 120 * 60 * 10
 '''
 pg.mixer.music.load('start_music.mp3')
@@ -96,12 +97,27 @@ class Map():
         pg.draw.rect(self.screen, BROWN, (0, 596, 1200, 4))
         pg.draw.rect(self.screen, BROWN, (1196, 0, 4, 600))
 
+hero1 = pg.image.load('jump1.png')
+hero2 = pg.image.load('jump2.png')
+hero3 = pg.image.load('jump3.png')
+hero4 = pg.image.load('jump3.png')
+
 class Hero():
     def __init__(self, coord=[150, 550]):
         self.coord = coord
 
     def draw(self, screen):
-        pg.draw.circle(screen, BLACK, (self.coord[0], self.coord[1]), 10)
+        global k
+        k += 1
+        if (k//10+1) % 5 == 0:
+            screen.blit(hero1,(self.coord[0]-35, self.coord[1]-35))
+        if (k//10+1) % 5 == 1 or (k//10+1) % 5 == 2:            
+            screen.blit(hero2,(self.coord[0]-35, self.coord[1]-35))
+        if (k//10+1) % 5 == 3:            
+            screen.blit(hero3,(self.coord[0]-35, self.coord[1]-35))
+        if (k//10+1) % 5 == 4:      
+            screen.blit(hero4,(self.coord[0]-35, self.coord[1]-35))
+        #pg.draw.circle(screen, BLACK, (self.coord[0], self.coord[1]), 10)
 
     def night(self):
         pg.draw.polygon(screen, BLACK, [[0 , 0], [self.coord[0] - 40, self.coord[1] - 40],
@@ -165,21 +181,21 @@ class Manager():
 
     def teleportation(self):
         if self.up_key_pressed:
-            if screen.get_at((self.hero.coord[0], self.hero.coord[1] - 11)) == GRAY or \
-                    screen.get_at((self.hero.coord[0], self.hero.coord[1] - 11)) == YELLOW:
-                self.hero.coord[1] -= 1
+            if screen.get_at((self.hero.coord[0], self.hero.coord[1] - 37)) == GRAY or \
+                    screen.get_at((self.hero.coord[0], self.hero.coord[1] - 37)) == YELLOW:
+                self.hero.coord[1] -= 2
         if self.down_key_pressed:
-            if screen.get_at((self.hero.coord[0], self.hero.coord[1] + 11)) == GRAY or\
-                    screen.get_at((self.hero.coord[0], self.hero.coord[1] + 11)) == YELLOW:
-                self.hero.coord[1] += 1
+            if screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37)) == GRAY or\
+                    screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37)) == YELLOW:
+                self.hero.coord[1] += 2
         if self.left_key_pressed:
-            if screen.get_at((self.hero.coord[0] - 11, self.hero.coord[1])) == GRAY or \
-                    screen.get_at((self.hero.coord[0] - 11, self.hero.coord[1])) == YELLOW:
-                self.hero.coord[0] -= 1
+            if screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1])) == GRAY or \
+                    screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1])) == YELLOW:
+                self.hero.coord[0] -= 2
         if self.right_key_pressed:
-            if screen.get_at((self.hero.coord[0] + 11, self.hero.coord[1])) == GRAY or\
-                    screen.get_at((self.hero.coord[0] + 11, self.hero.coord[1])) == YELLOW:
-                self.hero.coord[0] += 1
+            if screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1])) == GRAY or\
+                    screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1])) == YELLOW:
+                self.hero.coord[0] += 2
 
 
 
@@ -191,7 +207,7 @@ done = False
 mgr = Manager()
 
 while not done:
-    clock.tick(120)
+    clock.tick(150)
     done = mgr.process(pg.event.get(), screen)
     pg.display.update()
 
