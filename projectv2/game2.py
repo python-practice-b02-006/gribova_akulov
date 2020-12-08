@@ -66,20 +66,16 @@ pg.font.init()
 
 
 font_1 = pg.font.SysFont("serif", 60)
-screen = pg.display.set_mode(SIZE)
-pg.display.set_caption("Now it's my work")
+#screen = pg.display.set_mode(SIZE)
+#pg.display.set_caption("Now it's my work")
 clock = pg.time.Clock()
 
-done = False
+done2 = False
 
-pg.mixer.music.load('felicia.mp3')
-pg.mixer.music.play()
+
 
 SC_IMG = pg.image.load("night_forest.jpg")
-screen.blit(SC_IMG, (0, 0))
-screen.blit(SC_IMG, (337, 0))
-screen.blit(SC_IMG, (674, 0))
-screen.blit(SC_IMG, (1011, 0))
+
 
 class Schedule():
     def __init__(self, number, left_side = 50, ceiling = 50, color=None):
@@ -189,13 +185,19 @@ def match(centers_match,k):
     else: return False
 
 class Manager():
-    def __init__(self, figcoords):
+    def __init__(self, figcoords, screen):
         self.figures = []
+        self.done2 = False
         self.dots_figure = figcoords
+        self.screen = screen
         for i in range(len(self.dots_figure)):
             self.figures.append(Figure(dots=self.dots_figure[i]))
             
     def draw(self, screen, centers_match):
+        screen.blit(SC_IMG, (0, 0))
+        screen.blit(SC_IMG, (337, 0))
+        screen.blit(SC_IMG, (674, 0))
+        screen.blit(SC_IMG, (1011, 0))
         rocket1.draw(screen,1)
         rocket2.draw(screen,2)
         rocket3.draw(screen,3)
@@ -208,26 +210,32 @@ class Manager():
         rocket3.draw(screen,3)
         for i in range(len(self.dots_figure)):
             self.figures[i].draw(screen, self.figures[i])
+        exit_if_i_need_it = [0, 0, 0]
         for i in range(len(centers_match)):
             if match(centers_match[i], i):
                 if i == 0:
                     surf1 = font_1.render("GREAT!", False, GREY)
                     screen.blit(surf1, (100, 450))
-                if i ==1:
+                    exit_if_i_need_it[0] = 1
+                if i == 1:
                     surf2 = font_1.render("AWESOME!!", False, GREY)              
                     screen.blit(surf2, (450, 140))
+                    exit_if_i_need_it[1] = 1
                 if i == 2:
                     surf3 = font_1.render("EXCITING!", False, GREY)
                     screen.blit(surf3, (850, 450))
+                    exit_if_i_need_it[2] = 1
+
             
     def handle_events(self, events):
-        done = False
+        done2 = False
         for event in events:
             if event.type == pg.QUIT:
-                done = True
+                done2 = True
         for i in range(len(self.dots_figure)):
             self.figures[i].handle_events(events, i)
-        return done
+            
+        return done2
 
 centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
                  [197,273],  [136,297], [277,318]],
@@ -240,18 +248,18 @@ centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
                  
         
 
-mgr = Manager(dots_figure)
+#mgr = Manager(dots_figure)
 
 rocket1 = Schedule(1)
 rocket2 = Schedule(2)
 rocket3 = Schedule(3)
 #figure = Figure(dots=[[275, 485], [200, 435], [200, 485]])
-
+'''
 while not done:
     clock.tick(10000)
     mgr.draw(screen, centers_match)
     done = mgr.handle_events(pg.event.get())
-    pg.display.flip()
+    pg.display.flip()'''
     
     
 pg.quit()

@@ -2,6 +2,8 @@ import pygame as pg
 import numpy as np
 from random import randint
 import cv2
+import game1
+import game2
 
 SCREEN_SIZE = (1200, 600)
 BLACK = (0, 0, 0)
@@ -14,6 +16,12 @@ BROWN = (160, 82, 45) #150, 75, 0
 
 screen = pg.display.set_mode(SCREEN_SIZE)
 pg.init()
+pg.font.init()
+font_1 = pg.font.SysFont("serif", 60)
+
+
+
+
 k = 0
 seq = 120 * 60 * 10
 '''
@@ -45,10 +53,11 @@ while running:
 
 
 
-
+'''
 pg.mixer.music.load('adventure_music.mp3')
-pg.mixer.music.set_volume(0.5)
-pg.mixer.music.play()'''
+pg.mixer.music.set_volume(0.1)
+
+pg.mixer.music.play()
 
 
 class Timer():
@@ -74,6 +83,7 @@ class Timer():
 class Map():
     def __init__(self, screen):
         self.screen = screen
+        self.coord_points = [[50, 350], [450, 350], [450, 150], [850, 150], [1050, 350]]
 
     def draw(self):
         pg.draw.rect(self.screen, BROWN, (-100, -100, 1500, 800))
@@ -148,7 +158,7 @@ class Manager():
         self.hero.night()
         self.time.draw()
         self.time.end()
-        return done
+        return [done, self.where_are_you()]
 
     def handle_events(self, events):
         done = False
@@ -177,7 +187,11 @@ class Manager():
                     self.right_key_pressed = False
                 elif event.key == pg.K_LEFT:
                     self.left_key_pressed = False
-
+    
+    def where_are_you(self):
+        for i in range(5):
+            if (self.hero.coord[0] - self.map.coord_points[i][0])**2 + (self.hero.coord[1] - self.map.coord_points[i][1])**2 <250:
+                return i
 
     def teleportation(self):
         if self.up_key_pressed:
@@ -200,15 +214,79 @@ class Manager():
 
 
 
-pg.display.set_caption("The gun of Abacaba")
+pg.display.set_caption("TRY TO ESCAPE")
 clock = pg.time.Clock()
 
 done = False
 mgr = Manager()
+done1 = False
+mgr1 = game1.Manager(50, screen)
+
+
+
+dots_figure =[[[180, 588], [255, 513], [330, 588]],
+              [[100, 569], [25, 519], [25, 569]],
+              [[13, 392], [63, 517], [163, 392]],
+              [[243, 371], [293, 496], [243, 496]],
+              [[120, 496], [220, 496], [220, 371]],
+              [[117, 512], [167, 512], [167, 562], [117, 562]],
+              [[304, 556], [379, 506], [379, 456], [304, 506]],
+              [[275, 402], [350, 402], [350, 452]],
+              [[371, 118], [471, 118], [471, 18]],
+
+              [[670, 162], [570, 162], [570, 62]],
+              [[567, 177], [667, 177], [667, 277]],
+              [[785, 176], [685, 176], [685, 276]],
+              [[432, 197], [482, 222], [532, 172], [482, 122]],
+              [[488, 19], [488, 94], [538, 44]],
+              [[502, 112], [552, 162], [552, 62]],
+              [[675, 86], [725, 36], [675, 36]],
+              [[677, 107], [677, 157], [727, 157], [727, 57]],
+              [[745, 111], [745, 11], [795, 86], [795, 161]],
+                           
+              [[1050, 465], [1150, 465], [1050, 565]],
+              [[766, 577], [816, 527], [941, 527], [891, 577]],
+              [[1049, 337], [1174, 337], [1174, 437], [1049, 437]],
+              [[1169, 481], [1119, 531], [1119, 581], [1169, 581]],
+              [[918, 418], [918, 393], [968, 343], [1043, 418]],
+              [[1048, 225], [1048, 325], [1173, 325]],
+              [[822, 321], [822, 396], [897, 346], [897, 321]],
+              [[834, 420], [909, 370], [909, 495]],
+              [[922, 464], [922, 439], [1022, 439], [1022, 589]]]
+centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
+                 [197,273],  [136,297], [277,318]],
+
+                 [[564, 317], [632, 315], [565, 380], [633, 379], [548, 453], 
+                  [516, 506], [581, 498], [614, 517], [622, 462], [674, 481]],
+                 
+                 [[882, 82], [986, 74], [961, 150], [871, 160], [1067, 99],
+                  [1065, 190], [887, 223], [899, 281], [974, 244]]]
+mgr2 = game2.Manager(dots_figure, screen)
+done2 = False
 
 while not done:
     clock.tick(150)
-    done = mgr.process(pg.event.get(), screen)
+    done = mgr.process(pg.event.get(), screen)[0]
+    if 0 == mgr.process(pg.event.get(), screen)[1] and not done1:
+        pg.mixer.music.stop() 
+        pg.mixer.music.load('fake_id.mp3')
+        pg.mixer.music.play()
+        pg.mixer.music.set_volume(0.1)
+        while not done1:
+            clock.tick(120)
+            done1 = mgr1.process(pg.event.get(), screen)
+            pg.display.update()
+        mgr.up_key_pressed = False
+    if 4 == mgr.process(pg.event.get(), screen)[1] and not done2:
+        pg.mixer.music.stop() 
+        pg.mixer.music.load('felicia.mp3')
+        pg.mixer.music.play(-1)
+        pg.mixer.music.set_volume(0.1)
+        while not done2:
+            clock.tick(10000)
+            done2 = mgr2.handle_events(pg.event.get())
+            mgr2.draw(screen, centers_match)
+            pg.display.update()
     pg.display.update()
 
 pg.quit()
