@@ -292,5 +292,3 @@ while not done:
     done = mgr.process(pg.event.get(), screen)
     pg.display.flip()
     '''
-    
-pg.quit()

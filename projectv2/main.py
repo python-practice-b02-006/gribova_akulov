@@ -24,36 +24,7 @@ font_1 = pg.font.SysFont("serif", 60)
 
 k = 0
 seq = 120 * 60 * 10
-'''
-pg.mixer.music.load('start_music.mp3')
-pg.mixer.music.set_volume(0.5)
-pg.mixer.music.play()
-stream = 'start2.avi'
-# open stream
-cap = cv2.VideoCapture(stream)
-ret, img = cap.read()
-img = cv2.transpose(img)
-print('shape:', img.shape)
-# create window with the same size as frame
-screen = pg.display.set_mode((img.shape[0], img.shape[1]))
-running = True
-while running:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            running = False
-    # read one frame and check if there was no problem
-    ret, img = cap.read()
-    if not ret:
-        running = False
-        break
-    else:
-        img = cv2.transpose(img)
-        pg.surfarray.blit_array(screen, img)
-    pg.display.flip()
 
-
-
-'''
 pg.mixer.music.load('adventure_music.mp3')
 pg.mixer.music.set_volume(0.1)
 
@@ -276,7 +247,7 @@ while not done:
             clock.tick(120)
             done1 = mgr1.process(pg.event.get(), screen)
             pg.display.update()
-        mgr.up_key_pressed = False
+            mgr.time.change()            
     if 4 == mgr.process(pg.event.get(), screen)[1] and not done2:
         pg.mixer.music.stop() 
         pg.mixer.music.load('felicia.mp3')
@@ -284,8 +255,9 @@ while not done:
         pg.mixer.music.set_volume(0.1)
         while not done2:
             clock.tick(10000)
-            done2 = mgr2.handle_events(pg.event.get())
             mgr2.draw(screen, centers_match)
+            done2 = mgr2.handle_events(pg.event.get())
+            mgr.time.change()
             pg.display.update()
     pg.display.update()
 

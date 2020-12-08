@@ -225,17 +225,19 @@ class Manager():
                     surf3 = font_1.render("EXCITING!", False, GREY)
                     screen.blit(surf3, (850, 450))
                     exit_if_i_need_it[2] = 1
+        if exit_if_i_need_it == [1, 1, 1]:
+            self.done2 = True
 
             
     def handle_events(self, events):
         done2 = False
         for event in events:
             if event.type == pg.QUIT:
-                done2 = True
+                self.done2 = True
         for i in range(len(self.dots_figure)):
             self.figures[i].handle_events(events, i)
             
-        return done2
+        return self.done2
 
 centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
                  [197,273],  [136,297], [277,318]],
@@ -261,5 +263,3 @@ while not done:
     done = mgr.handle_events(pg.event.get())
     pg.display.flip()'''
     
-    
-pg.quit()
