@@ -5,6 +5,7 @@ import cv2
 import game1
 import game2
 
+
 SCREEN_SIZE = (1200, 600)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -32,8 +33,9 @@ pg.mixer.music.play()
 
 
 class Timer():
-    def __init__(self, time=seq):
+    def __init__(self, time=seq, ready=0):
         self.time = time
+        self.ready = ready
 
     def draw(self):
         a = (seq - self.time)/seq
@@ -42,6 +44,12 @@ class Timer():
         f1 = pg.font.Font(None, 36)
         text1 = f1.render('TIME YOU HAVE', 1, RED)
         screen.blit(text1, (500, 20))
+        text1 = f1.render('DONE'+ ' ' + str(self.ready) + '/' + '5', 1, RED)
+        screen.blit(text1, (1000, 40))
+
+
+    def change_numb(self):
+        self.ready += 1
 
     def change(self):
         self.time -= 1
@@ -49,6 +57,10 @@ class Timer():
     def end(self):
         if self.time <= 0:
             screen.fill(BLACK)
+
+    def good_end(self):
+        if int(self.ready) == 5:
+            screen.fill(WHITE)
 
 
 class Map():
@@ -129,6 +141,7 @@ class Manager():
         self.hero.night()
         self.time.draw()
         self.time.end()
+        self.time.good_end()
         return [done, self.where_are_you()]
 
     def handle_events(self, events):
@@ -224,6 +237,7 @@ dots_figure =[[[180, 588], [255, 513], [330, 588]],
               [[822, 321], [822, 396], [897, 346], [897, 321]],
               [[834, 420], [909, 370], [909, 495]],
               [[922, 464], [922, 439], [1022, 439], [1022, 589]]]
+
 centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
                  [197,273],  [136,297], [277,318]],
 
@@ -232,8 +246,11 @@ centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
                  
                  [[882, 82], [986, 74], [961, 150], [871, 160], [1067, 99],
                   [1065, 190], [887, 223], [899, 281], [974, 244]]]
+
 mgr2 = game2.Manager(dots_figure, screen)
 done2 = False
+
+
 
 while not done:
     clock.tick(150)
@@ -243,6 +260,7 @@ while not done:
         pg.mixer.music.load('fake_id.mp3')
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
+        mgr.time.change_numb()
         while not done1:
             clock.tick(120)
             done1 = mgr1.process(pg.event.get(), screen)
@@ -253,12 +271,14 @@ while not done:
         pg.mixer.music.load('felicia.mp3')
         pg.mixer.music.play(-1)
         pg.mixer.music.set_volume(0.1)
+        mgr.time.change_numb()
         while not done2:
             clock.tick(10000)
             mgr2.draw(screen, centers_match)
             done2 = mgr2.handle_events(pg.event.get())
             mgr.time.change()
             pg.display.update()
+
     pg.display.update()
 
 pg.quit()
