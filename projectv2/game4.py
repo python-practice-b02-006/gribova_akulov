@@ -16,23 +16,30 @@ class Ball():
 
     def __init__(self, coord=None):
         if coord==None:
-            coord = (randint(0, 1200), randint(0, 600))
+            coord1 = [randint(0, 1200), randint(0, 600)]
+            
+            if 300 < coord1[1] < 450:
+                coord1[1] += 130
+            if 220< coord1[1] <= 300:
+                coord1[1] -= 150   
+            coord = (coord1[0], coord1[1])
         self.coord = coord
 
 
     def draw(self, screen):
-        fire_img = pg.image.load("fire.png")
+        fire_img = pg.image.load("fire.png").convert_alpha()
         screen.blit(fire_img, (self.coord[0], self.coord[1]))
 
     def check(self, mouse_pos):
-        if (self.coord[0]-mouse_pos[0])**2+(self.coord[1]-mouse_pos[1])**2 < 50*50:
+        if (self.coord[0]+15-mouse_pos[0])**2+(self.coord[1]+15-mouse_pos[1])**2 < 50*60:
             return 1
 
 q=30*60*2
 class Manager():
-    def __init__(self, time=q):
+    def __init__(self, events, screen, time=30*60*2):
         self.balls = []
         self.time = time
+        self.screen = screen
 
     def up_time(self):
         self.time -= 1
@@ -42,10 +49,10 @@ class Manager():
     def print_time(self):
         a = (q - self.time) / q
         a = int(a * 1200)
-        pg.draw.rect(screen, WHITE, (0, 10, a, 10))
+        pg.draw.rect(self.screen, WHITE, (0, 10, a, 10))
         f1 = pg.font.Font(None, 36)
         text1 = f1.render('TIME YOU HAVE', 1, WHITE)
-        screen.blit(text1, (500, 20))
+        self.screen.blit(text1, (500, 20))
 
     def new_aim(self):
        self.balls.append(Ball())
@@ -98,24 +105,6 @@ class Manager():
 
 
 
-
-
-screen = pg.display.set_mode(SCREEN_SIZE)
-pg.display.set_caption("The gun of Abacaba")
-clock = pg.time.Clock()
-
-mgr = Manager()
-
 done = False
 
 score = 0
-'''
-основное тело
-'''
-while not done:
-    clock.tick(30)
-
-    done = mgr.process(pg.event.get(), screen)
-    pg.display.flip()
-
-pg.quit()

@@ -53,7 +53,7 @@ class Manager():
         self.lost = 0
 
     def draw(self):
-        SC = pg.image.load("space_forgame1.jpg")
+        SC = pg.image.load("space_forgame3.jpg")
         screen.blit(SC, (0, 0))
 
 
