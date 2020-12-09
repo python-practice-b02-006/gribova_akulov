@@ -1,6 +1,8 @@
 import pygame as pg
 import numpy as np
 from random import randint
+
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 LSALMON = (255, 160, 122)
@@ -15,7 +17,8 @@ BROWN = (139, 69, 19)
 GREY = (130, 130, 130)
 COLORS = [LSALMON, PEACH, LEMONE, SKYBLUE, TOMATO, GREY, CADET, BROWN]
 SCREEN_SIZE = (1200, 600)
-screen = pg.display.set_mode(SCREEN_SIZE)
+
+
 pg.init()
 
 def new_ball(x, y):
@@ -39,7 +42,7 @@ a = new_spaceship()
 q=30*60*3
 
 class Manager():
-    def __init__(self):
+    def __init__(self, screen):
         self.meteors = []
         self.strikes = []
         self.up_key_pressed = False
@@ -51,21 +54,22 @@ class Manager():
         self.calculate = 0
         self.win = False
         self.lost = 0
+        self.screen = screen
 
     def draw(self):
         SC = pg.image.load("space_forgame3.jpg")
-        screen.blit(SC, (0, 0))
+        self.screen.blit(SC, (0, 0))
 
 
         for unit in self.meteors:
             unit['x'] -= 12
             SC1 = pg.image.load("qquop.png")
-            screen.blit(SC1, (unit['x'], unit['y']))
+            self.screen.blit(SC1, (unit['x'], unit['y']))
         for unit in self.strikes:
-            pg.draw.circle(screen, WHITE, (unit['x'], unit['y']), 3)
+            pg.draw.circle(self.screen, WHITE, (unit['x'], unit['y']), 3)
             unit['x'] += 15
         SC1 = pg.image.load("spaceship.png")
-        screen.blit(SC1, (a['x'], a['y']))
+        self.screen.blit(SC1, (a['x'], a['y']))
 
 
 
@@ -139,10 +143,10 @@ class Manager():
             self.meteors.append(new_meteor())
         f1 = pg.font.Font(None, 36)
         text1 = f1.render('you done'+'' + str(self.calculate) + '/' + '50', 1, TOMATO)
-        screen.blit(text1, (500, 20))
+        self.screen.blit(text1, (500, 20))
         f1 = pg.font.Font(None, 36)
         text1 = f1.render('you lost' + '' + str(self.lost) + '/' + '10', 1, TOMATO)
-        screen.blit(text1, (500, 50))
+        self.screen.blit(text1, (500, 50))
         if self.calculate == 50:
             self.win = True
         if self.lost > 9:
@@ -192,17 +196,3 @@ class Manager():
 
 
 
-
-
-done = False
-clock = pg.time.Clock()
-
-mgr = Manager()
-
-while not done:
-    clock.tick(30)
-    screen.fill(BLACK)
-
-    done = mgr.process(pg.event.get())
-
-    pg.display.update()

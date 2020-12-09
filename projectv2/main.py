@@ -5,6 +5,7 @@ import cv2
 import game1
 import game2
 import game4
+import experiment
 
 SCREEN_SIZE = (1200, 600)
 BLACK = (0, 0, 0)
@@ -239,7 +240,8 @@ done2 = False
 mgr4 = game4.Manager(dots_figure, screen)
 done4 = False
 
-
+mgr3 = experiment.Manager(screen)
+done3 = False
 
 while not done:
     clock.tick(150)
@@ -273,7 +275,18 @@ while not done:
         while not done4:
             clock.tick(30)
             done4 = mgr4.process(pg.event.get(), screen)
-            pg.display.update()            
+            pg.display.update() 
+            mgr.time.change()
+    if 2 == mgr.process(pg.event.get(), screen)[1] and not done3:
+        pg.mixer.music.stop() 
+        pg.mixer.music.load('psy.mp3')
+        pg.mixer.music.play()
+        pg.mixer.music.set_volume(0.1)
+        while not done3:
+            clock.tick(30)
+            done3 = mgr3.process(pg.event.get())
+            pg.display.update() 
+            mgr.time.change()
     pg.display.update()
 
 pg.quit()

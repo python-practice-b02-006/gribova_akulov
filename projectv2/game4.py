@@ -34,9 +34,9 @@ class Ball():
         if (self.coord[0]+15-mouse_pos[0])**2+(self.coord[1]+15-mouse_pos[1])**2 < 50*60:
             return 1
 
-q=30*60*2
+q=30*60
 class Manager():
-    def __init__(self, events, screen, time=30*60*2):
+    def __init__(self, events, screen, time=30*60):
         self.balls = []
         self.time = time
         self.screen = screen
@@ -47,8 +47,8 @@ class Manager():
             self.new_aim()
 
     def print_time(self):
-        a = (q - self.time) / q
-        a = int(a * 1200)
+        a = (30*60 - self.time) / q
+        a = int(a * 600)
         pg.draw.rect(self.screen, WHITE, (0, 10, a, 10))
         f1 = pg.font.Font(None, 36)
         text1 = f1.render('TIME YOU HAVE', 1, WHITE)
@@ -80,8 +80,6 @@ class Manager():
         screen.blit(SC, (0,0))
         for ball in self.balls:
             ball.draw(screen)
-
-
 
 
     def handle_events(self, events):
