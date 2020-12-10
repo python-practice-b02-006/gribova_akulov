@@ -192,6 +192,7 @@ class Manager():
         self.screen = screen
         for i in range(len(self.dots_figure)):
             self.figures.append(Figure(dots=self.dots_figure[i]))
+        self.done3 = False
             
     def draw(self, screen, centers_match):
         screen.blit(SC_IMG, (0, 0))
@@ -227,6 +228,7 @@ class Manager():
                     exit_if_i_need_it[2] = 1
         if exit_if_i_need_it == [1, 1, 1]:
             self.done2 = True
+            self.done3 = True
 
             
     def handle_events(self, events):
@@ -237,7 +239,7 @@ class Manager():
         for i in range(len(self.dots_figure)):
             self.figures[i].handle_events(events, i)
             
-        return self.done2
+        return self.done2, self.done3
 
 centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
                  [197,273],  [136,297], [277,318]],

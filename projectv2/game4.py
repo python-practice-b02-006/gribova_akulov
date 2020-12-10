@@ -16,7 +16,7 @@ class Ball():
 
     def __init__(self, coord=None):
         if coord==None:
-            coord1 = [randint(0, 1200), randint(0, 600)]
+            coord1 = [randint(50, 1150), randint(50, 550)]
             
             if 300 < coord1[1] < 450:
                 coord1[1] += 130
@@ -34,16 +34,18 @@ class Ball():
         if (self.coord[0]+15-mouse_pos[0])**2+(self.coord[1]+15-mouse_pos[1])**2 < 50*60:
             return 1
 
-q=30*60
+q=15*60
 class Manager():
+    global A
     def __init__(self, events, screen, time=30*60):
         self.balls = []
         self.time = time
         self.screen = screen
+        self.done = 0
 
     def up_time(self):
         self.time -= 1
-        if self.time % 30 == 0 and self.time > 60:
+        if self.time % 20 == 0 and self.time > 60:
             self.new_aim()
 
     def print_time(self):
@@ -61,7 +63,7 @@ class Manager():
         done = False
         if self.time == 0:
             if len(self.balls) == 0:
-                print('afasdf')
+                self.done=1
             done = True
         return done
 
@@ -71,9 +73,10 @@ class Manager():
         self.draw(screen)
         self.up_time()
         self.print_time()
+        self.final_check()
         if self.final_check() == True:
             done = True
-        return done
+        return done, self.done
 
     def draw(self, screen):
         SC = pg.image.load("menu.jpg")

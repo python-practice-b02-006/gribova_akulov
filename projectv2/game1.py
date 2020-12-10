@@ -187,17 +187,20 @@ class Manager():
         
     def process(self, events, screen):
         done1 = self.handle_events(events)
+        done2= False
         self.draw(screen)
         self.move()
         self.collide()
         self.check_alive()
         if len(self.targets) == 0 and len(self.balls) == 0:
             done1 = True
-            #self.missions(screen)        
+            #self.missions(screen)
+        if len(self.targets) == 0:
+            done2 = True
         if pg.mouse.get_focused():
             mouse_pos = pg.mouse.get_pos()
             self.gun.set_angle(mouse_pos)
-        return done1
+        return done1, done2
         
     def draw(self, screen):
         screen.blit(SC_IMG, (0, 0))

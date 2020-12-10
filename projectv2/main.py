@@ -25,7 +25,7 @@ font_1 = pg.font.SysFont("serif", 60)
 
 
 k = 0
-seq = 120 * 60 * 10
+seq =  30*60*10
 
 pg.mixer.music.load('adventure_music.mp3')
 pg.mixer.music.set_volume(0.1)
@@ -34,8 +34,10 @@ pg.mixer.music.play()
 
 
 class Timer():
+    global A
     def __init__(self, time=seq):
         self.time = time
+
 
     def draw(self):
         a = (seq - self.time)/seq
@@ -48,9 +50,22 @@ class Timer():
     def change(self):
         self.time -= 1
 
-    def end(self):
+    def bad_end(self):
         if self.time <= 0:
             screen.fill(BLACK)
+            f1 = pg.font.Font(None, 36)
+            text1 = f1.render('You lose', 1, RED)
+            screen.blit(text1, (500, 300))
+
+    def good_end(self):
+        f1 = pg.font.Font(None, 36)
+        text1 = f1.render('You done' + ' ' + str(A) + '/4', 1, RED)
+        screen.blit(text1, (1000, 40))
+        if A == 4:
+            screen.fill(BLACK)
+            f1 = pg.font.Font(None, 36)
+            text1 = f1.render('You win', 1, RED)
+            screen.blit(text1, (500, 300))
 
 
 class Map():
@@ -74,11 +89,17 @@ class Map():
         pg.draw.circle(self.screen, YELLOW, (50, 350), 20)
         pg.draw.circle(self.screen, YELLOW, (450, 350), 20)
         pg.draw.circle(self.screen, YELLOW, (450, 150), 20)
-        pg.draw.circle(self.screen, YELLOW, (850, 150), 20)
+        pg.draw.rect(self.screen, BROWN, (100, 0, 100, 100))
         pg.draw.circle(self.screen, YELLOW, (1050, 350), 20)
         pg.draw.rect(self.screen, BROWN, (0, 0, 4, 600))
         pg.draw.rect(self.screen, BROWN, (0, 596, 1200, 4))
         pg.draw.rect(self.screen, BROWN, (1196, 0, 4, 600))
+        pg.draw.rect(self.screen, GRAY, (100, 10, 100, 100))
+        pg.draw.rect(self.screen, GRAY, (700, 100, 100, 100))
+        pg.draw.rect(self.screen, GRAY, (900, 200, 80, 100))
+        pg.draw.rect(self.screen, GRAY, (1100, 100, 96, 200))
+        pg.draw.rect(self.screen, GRAY, (1000, 100, 100, 100))
+
 
 hero1 = pg.image.load('jump1.png')
 hero2 = pg.image.load('jump2.png')
@@ -130,7 +151,8 @@ class Manager():
         self.teleportation()
         self.hero.night()
         self.time.draw()
-        self.time.end()
+        self.time.bad_end()
+        self.time.good_end()
         return [done, self.where_are_you()]
 
     def handle_events(self, events):
@@ -192,10 +214,10 @@ clock = pg.time.Clock()
 
 done = False
 mgr = Manager()
-done1 = False
+done1 = (False, False)
 mgr1 = game1.Manager(50, screen)
 
-
+A=0
 
 dots_figure =[[[180, 588], [255, 513], [330, 588]],
               [[100, 569], [25, 519], [25, 569]],
@@ -235,58 +257,67 @@ centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
                  [[882, 82], [986, 74], [961, 150], [871, 160], [1067, 99],
                   [1065, 190], [887, 223], [899, 281], [974, 244]]]
 mgr2 = game2.Manager(dots_figure, screen)
-done2 = False
+done2 = (False, False)
 
-mgr4 = game4.Manager(dots_figure, screen)
-done4 = False
+mgr4 = game4.Manager(dots_figure,screen)
+done4 = (False, 0)
 
 mgr3 = experiment.Manager(screen)
-done3 = False
+done3 = (False, 0)
 
 while not done:
     clock.tick(150)
     done = mgr.process(pg.event.get(), screen)[0]
-    if 0 == mgr.process(pg.event.get(), screen)[1] and not done1:
+    if 0 == mgr.process(pg.event.get(), screen)[1] and not done1[0]:
         pg.mixer.music.stop() 
         pg.mixer.music.load('fake_id.mp3')
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
-        while not done1:
+        while not done1[0]:
             clock.tick(120)
             done1 = mgr1.process(pg.event.get(), screen)
             pg.display.update()
-            mgr.time.change()            
-    if 4 == mgr.process(pg.event.get(), screen)[1] and not done2:
+            mgr.time.change()
+        if done1[1] == True:
+            A+=1
+    if 4 == mgr.process(pg.event.get(), screen)[1] and not done2[0]:
         pg.mixer.music.stop() 
         pg.mixer.music.load('felicia.mp3')
         pg.mixer.music.play(-1)
         pg.mixer.music.set_volume(0.1)
-        while not done2:
+        while not done2[0]:
             clock.tick(10000)
             mgr2.draw(screen, centers_match)
             done2 = mgr2.handle_events(pg.event.get())
             mgr.time.change()
             pg.display.update()
-    if 1 == mgr.process(pg.event.get(), screen)[1] and not done4:
+        if done2[1] == True:
+            A+=1
+    if 1 == mgr.process(pg.event.get(), screen)[1] and not done4[0]:
         pg.mixer.music.stop() 
         pg.mixer.music.load('new_rules.mp3')
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
-        while not done4:
+        while not done4[0]:
             clock.tick(30)
             done4 = mgr4.process(pg.event.get(), screen)
             pg.display.update() 
             mgr.time.change()
-    if 2 == mgr.process(pg.event.get(), screen)[1] and not done3:
+        if done4[1] == 1:
+            A+=1
+    if 2 == mgr.process(pg.event.get(), screen)[1] and not done3[0]:
         pg.mixer.music.stop() 
         pg.mixer.music.load('psy.mp3')
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
-        while not done3:
+        while not done3[0]:
             clock.tick(30)
             done3 = mgr3.process(pg.event.get())
             pg.display.update() 
             mgr.time.change()
+        if done3[1] ==1:
+            A+=1
+
     pg.display.update()
 
 pg.quit()

@@ -42,6 +42,7 @@ a = new_spaceship()
 q=30*60*3
 
 class Manager():
+    global A
     def __init__(self, screen):
         self.meteors = []
         self.strikes = []
@@ -52,7 +53,7 @@ class Manager():
         self.time = q
         self.crash = False
         self.calculate = 0
-        self.win = False
+        self.win = 0
         self.lost = 0
         self.screen = screen
 
@@ -70,8 +71,6 @@ class Manager():
             unit['x'] += 15
         SC1 = pg.image.load("spaceship.png")
         self.screen.blit(SC1, (a['x'], a['y']))
-
-
 
 
     def handle_events(self, events):
@@ -133,7 +132,7 @@ class Manager():
 
     def lose(self):
         for unit in self.meteors:
-            if unit['x'] > 0 and unit['x'] < 13 :
+            if unit['x'] > 0 and unit['x'] < 10 :
                 self.lost += 1
 
 
@@ -148,7 +147,7 @@ class Manager():
         text1 = f1.render('you lost' + '' + str(self.lost) + '/' + '10', 1, TOMATO)
         self.screen.blit(text1, (500, 50))
         if self.calculate == 50:
-            self.win = True
+            self.win = 1
         if self.lost > 9:
             self.crash = True
 
@@ -175,6 +174,7 @@ class Manager():
         if self.win==True or self.crash==True:
             return 1
 
+
     def process(self, events):
         done = self.handle_events(events)
         self.draw()
@@ -185,7 +185,8 @@ class Manager():
         self.lose()
         if self.end() == 1:
             done = True
-        return done
+        return done, self.win
+
 
 
 
