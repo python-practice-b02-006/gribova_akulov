@@ -9,8 +9,8 @@ import numpy as np
 from random import randint
 
 SIZE = (1200, 600)
-A=[] 
-presents=[[100,0], [550,100], [1050,150]]
+A = []
+presents = [[100, 0], [550, 100], [1050, 150]]
 s = len(presents)
 B = []
 
@@ -30,7 +30,6 @@ COLORS = [LSALMON, PEACH, LEMONE, SKYBLUE, TOMATO, GREY, CADET, BROWN]
 pg.init()
 
 
-
 class Table():
     def __init__(self, t_destr=0, b_used=0):
         self.t_destr = t_destr
@@ -47,11 +46,12 @@ class Table():
         for i in range(2):
             screen.blit(score_surf[i], [10, 10 + 30*i])
 
+
 class Ball():
     def __init__(self, coord, vel, rad=15, color=None):
         if color == None:
-            color = COLORS[randint(0,len(COLORS)-1)]
-        self.alive=True
+            color = COLORS[randint(0, len(COLORS)-1)]
+        self.alive = True
         self.color = color
         self.coord = coord
         self.vel = vel
@@ -69,9 +69,8 @@ class Ball():
             self.coord[i] += int(self.vel[i] * t_step)
         self.wall()        
         if self.vel[0]**2 + self.vel[1]**2 < 2**2 and self.coord[1] > SIZE[1] - 2*self.rad:
-               self.alive = False
+            self.alive = False
              
-
     def wall(self):
         n = [[1, 0], [0, 1]]
        
@@ -82,17 +81,18 @@ class Ball():
             elif self.coord[i] > SIZE[i] - self.rad:
                 self.coord[i] = SIZE[i] - self.rad
                 self.flip_vel(n[i])
-     
     
     def flip_vel(self, axis, coef_perp=1, coef_par=1):
         vel = np.array(self.vel)
         n = np.array(axis)
         n = n / np.linalg.norm(n)
-        vel_perp = vel.dot(n) * n #скалярное произведение массиввов
+        vel_perp = vel.dot(n) * n
+        #скалярное произведение массиввов
         vel_par = vel - vel_perp
         ans = -0.9*vel_perp + 0.93*vel_par
         self.vel = ans.astype(np.int).tolist()    
-        if vel_perp.any()<0.001: self.alive=False
+        if vel_perp.any() < 0.001:
+            self.alive = False
     
     def draw(self, screen):
         pg.draw.circle(screen, self.color, self.coord, self.rad)
@@ -107,12 +107,11 @@ class Gun():
         self.power = minp
         self.active = False
         A = self.coord
-        
     
     def draw(self, screen):
         gun_ = pg.image.load("gun.png").convert_alpha()
         gun = pg.transform.rotate(gun_, -180/np.pi*self.angle-90)
-        screen.blit(gun,(self.coord[0]-29, self.coord[1]-26.5))
+        screen.blit(gun, (self.coord[0]-29, self.coord[1]-26.5))
     
     def set_angle(self, mouse_pos):
         self.angle = np.arctan2(mouse_pos[1] - self.coord[1], 
@@ -122,7 +121,6 @@ class Gun():
         vel = [int(self.power * np.cos(self.angle)), 
                int(self.power * np.sin(self.angle))]
         return Ball(list(self.coord), vel)
-    
 
 
 class Target():
@@ -156,7 +154,7 @@ class Target():
         money = pg.image.load("timeismoney.png").convert_alpha()
         for i in range(len(B)):
             if 50*B[i][1] < 400:
-                self.screen.blit(money,(50*B[i][0], 50*B[i][1]))
+                self.screen.blit(money, (50*B[i][0], 50*B[i][1]))
             B[i][1] += speed*t_step
             
 
@@ -184,7 +182,6 @@ class Manager():
         for i in reversed(dead_balls):
             self.balls.pop(i)
         
-        
     def process(self, events, screen):
         done1 = self.handle_events(events)
         done2= False
@@ -207,8 +204,8 @@ class Manager():
         screen.blit(SC_IMG, (0, 0))
         pg.draw.line(screen, TOMATO, (200, 450), (300, 450), 4)
         pg.draw.line(screen, TOMATO, (1000, 450), (900, 450), 4)
-        pg.draw.lines(screen, TOMATO, False,[[220, 430], [200, 450], [220, 470]], 4)
-        pg.draw.lines(screen, TOMATO, False,[[980, 430], [1000, 450], [980, 470]], 4)        
+        pg.draw.lines(screen, TOMATO, False, [[220, 430], [200, 450], [220, 470]], 4)
+        pg.draw.lines(screen, TOMATO, False, [[980, 430], [1000, 450], [980, 470]], 4)
         
         for i in self.balls:
             i.draw(screen)
@@ -255,7 +252,7 @@ class Manager():
             self.targets.append(Target(screen, r=randint(max(1, abs(30 - 2*max(0, self.score_t.score()))), 
                 abs(30 - max(0, self.score_t.score())))))
         for i in range(len(presents)):
-            self.targets.append(Target(screen,coord=[presents[i][0]//50, presents[i][1]//50], color=TOMATO))
+            self.targets.append(Target(screen, coord=[presents[i][0]//50, presents[i][1]//50], color=TOMATO))
     
     def collide(self):
         collisions = []
@@ -271,20 +268,20 @@ class Manager():
         targets_c.sort()
         for j in reversed(targets_c):
             self.score_t.t_destr += 1
-            if j >= len(self.targets)-s:
-                s-=1
+            if j >= len(self.targets) - s:
+                s -= 1
                 self.score_t.t_destr += 8
                 B.append(self.targets[j].coord)
                 print(B)
             self.targets.pop(j)
         
-
+'''
 #screen = pg.display.set_mode(SIZE)
 #pg.display.set_caption("game1")
 #clock = pg.time.Clock()
 
 #mgr = Manager(30)
-
+'''
 done1 = False
 
 SC_IMG = pg.image.load("space_forgame1.jpg")
