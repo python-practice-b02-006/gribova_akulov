@@ -8,16 +8,18 @@ import numpy as np
 import pygame as pg
 from random import randint
 
+
 def mediana(a, b, c):
     m_a = int(np.sqrt(2*(b**2+c**2)-a**2)/3)
     m_b = int(np.sqrt(2*(a**2+c**2)-b**2)/3)
     m_c = int(np.sqrt(2*(b**2+a**2)-c**2)/3)
     return min(m_a+1, m_b+1, m_c+1)
 
+
 SIZE = (1200, 600)
 b = ['ne_zanyato']
 
-dots_figure =[[[180, 588], [255, 513], [330, 588]],
+dots_figure = [[[180, 588], [255, 513], [330, 588]],
               [[100, 569], [25, 519], [25, 569]],
               [[13, 392], [63, 517], [163, 392]],
               [[243, 371], [293, 496], [243, 496]],
@@ -46,7 +48,7 @@ dots_figure =[[[180, 588], [255, 513], [330, 588]],
               [[822, 321], [822, 396], [897, 346], [897, 321]],
               [[834, 420], [909, 370], [909, 495]],
               [[922, 464], [922, 439], [1022, 439], [1022, 589]]]
-A=[[0,0]]*len(dots_figure)
+A = [[0, 0]]*len(dots_figure)
 
 BLACK = (0, 0, 0)
 LSALMON = (255, 160, 122)
@@ -66,59 +68,58 @@ pg.font.init()
 
 
 font_1 = pg.font.SysFont("serif", 60)
-#screen = pg.display.set_mode(SIZE)
-#pg.display.set_caption("Now it's my work")
+
 clock = pg.time.Clock()
 
 done2 = False
-
 
 
 SC_IMG = pg.image.load("night_forest.jpg")
 
 
 class Schedule():
-    def __init__(self, number, left_side = 50, ceiling = 50, color=None):
+    def __init__(self, number, left_side=50, ceiling=50, color=None):
         self.l = left_side
         if color == None:
-            self.color = COLORS[randint(0,len(COLORS)-1)]
+            self.color = COLORS[randint(0, len(COLORS)-1)]
         self.c = ceiling
         self.coord = [[[self.l + 150, self.c], [self.l + 75, self.c + 75],
                        [self.l + 75, self.c + 200], [self.l + 125, self.c + 200],
-                       [self.l + 50, self.c + 250], [self.l + 50, self.c +300],
+                       [self.l + 50, self.c + 250], [self.l + 50, self.c + 300],
                        [self.l + 125, self.c + 250], [self.l + 175, self.c + 250],
                        [self.l + 250, self.c + 300], [self.l + 250, self.c + 250],
                        [self.l + 175, self.c + 200], [self.l + 225, self.c + 200],
                        [self.l + 225, self.c + 75], [self.l + 150, self.c]],
-                      [[self.l+400 + 150, self.c+200], [self.l+400 + 50, self.c+200 + 100],
-                       [self.l+400 + 100, self.c+200 + 150], [self.l+400 + 50, self.c+200 +225],
-                       [self.l+400 + 50, self.c+200 + 300], [self.l+400 + 100, self.c+200 + 250],
-                       [self.l+400 + 150, self.c+200 +300], [self.l+400 + 200, self.c+200 +250],
-                       [self.l+400 + 250, self.c+200 +300], [self.l+400 + 250, self.c+200 +225],
-                       [self.l+400 + 200, self.c+200 +150], [self.l+400 + 250, self.c+200 +100],
-                       [self.l+400 + 150, self.c+200]],
-                      [[self.l+800 + 225,self.c +0],[self.l+800 + 0,self.c +0],
-                       [self.l+800 + 0,self.c +225], [self.l+800 + 75,self.c + 300],
-                       [self.l+800 + 75,self.c +175], [self.l+800 + 175,self.c +300],
-                       [self.l+800 + 175,self.c +175], [self.l+800 + 300,self.c +175],
-                       [self.l+800 + 175,self.c +75], [self.l+800 + 300,self.c +75],
-                       [self.l+800 + 225,self.c +0]]]
+                      [[self.l + 400 + 150, self.c + 200], [self.l+400 + 50, self.c+200 + 100],
+                       [self.l + 400 + 100, self.c + 200 + 150], [self.l + 400 + 50, self.c + 200 + 225],
+                       [self.l + 400 + 50, self.c + 200 + 300], [self.l + 400 + 100, self.c + 200 + 250],
+                       [self.l + 400 + 150, self.c + 200 + 300], [self.l + 400 + 200, self.c + 200 + 250],
+                       [self.l + 400 + 250, self.c + 200 + 300], [self.l + 400 + 250, self.c + 200 + 225],
+                       [self.l + 400 + 200, self.c + 200 + 150], [self.l + 400 + 250, self.c + 200 + 100],
+                       [self.l + 400 + 150, self.c + 200]],
+                      [[self.l + 800 + 225, self.c + 0], [self.l+800 + 0, self.c + 0],
+                       [self.l + 800 + 0, self.c + 225], [self.l+800 + 75, self.c + 300],
+                       [self.l + 800 + 75, self.c + 175], [self.l+800 + 175, self.c + 300],
+                       [self.l + 800 + 175, self.c + 175], [self.l+800 + 300, self.c + 175],
+                       [self.l + 800 + 175, self.c + 75], [self.l+800 + 300, self.c + 75],
+                       [self.l + 800 + 225, self.c + 0]]]
     
     def draw(self, screen, n):
         pg.draw.lines(screen, self.color, False, self.coord[n-1], 5)
 
+
 class Figure():
     def __init__(self, dots, color=None):
         self.norm_dots = dots
-        self.coord=[0, 0]
+        self.coord = [0, 0]
         self.dots = [0]*len(dots)
         for i in range(len(dots)):
             self.coord[0] += int(dots[i][0]/len(dots))
             self.coord[1] += int(dots[i][1]/len(dots))
             self.dots[i] = (dots[i][0], dots[i][1])
-        self.color = COLORS[randint(0,len(COLORS)-1)]
+        self.color = COLORS[randint(0, len(COLORS)-1)]
         self.active = 0
-        if len(dots)==3:
+        if len(dots) == 3:
             self.rad = mediana(np.sqrt((dots[0][0]-dots[1][0])**2+(dots[0][1]-dots[1][1])**2),
                                np.sqrt((dots[0][0]-dots[2][0])**2+(dots[0][1]-dots[2][1])**2),
                                np.sqrt((dots[2][0]-dots[1][0])**2+(dots[2][1]-dots[1][1])**2))
@@ -140,8 +141,8 @@ class Figure():
         global b, A
         if ((mouse_pos[0] - self.coord[0]) ** 2 + (mouse_pos[1] - self.coord[1]) ** 2) < self.rad ** 2:      
             if b == ['ne_zanyato']:
-                b=[k]
-            elif len(b) !=  1:
+                b = [k]
+            elif len(b) != 1:
                 b.pop()
             elif b[0] != k: 
                 b.append(k)
@@ -151,7 +152,6 @@ class Figure():
                     self.norm_dots[i][1] += - self.coord[1] + mouse_pos[1]
                 self.coord = mouse_pos
                 A[k] = self.coord
-
 
     def handle_events(self, events, k):
         global b
@@ -167,11 +167,12 @@ class Figure():
         if pressed[0]:
             self.movement(mouse_pos, k)          
 
-def match(centers_match,k):
+
+def match(centers_match, k):
     global A
-    z = [0,0,0]
+    z = [0, 0, 0]
     for i in range(len(centers_match)):
-        if len(centers_match)==8:
+        if len(centers_match) == 8:
             if (centers_match[i][0] - A[i][0])**2 + (centers_match[i][1] - A[i][1])**2 < 200:
                 z[0] += 1
         if len(centers_match) == 10:
@@ -182,7 +183,9 @@ def match(centers_match,k):
                 z[2] += 1
     if z[k] == len(centers_match):
         return True
-    else: return False
+    else:
+        return False
+
 
 class Manager():
     def __init__(self, figcoords, screen):
@@ -199,16 +202,16 @@ class Manager():
         screen.blit(SC_IMG, (337, 0))
         screen.blit(SC_IMG, (674, 0))
         screen.blit(SC_IMG, (1011, 0))
-        rocket1.draw(screen,1)
-        rocket2.draw(screen,2)
-        rocket3.draw(screen,3)
+        rocket1.draw(screen, 1)
+        rocket2.draw(screen, 2)
+        rocket3.draw(screen, 3)
         screen.blit(SC_IMG, (0, 0))
         screen.blit(SC_IMG, (337, 0))
         screen.blit(SC_IMG, (674, 0))
         screen.blit(SC_IMG, (1011, 0))
-        rocket1.draw(screen,1)
-        rocket2.draw(screen,2)
-        rocket3.draw(screen,3)
+        rocket1.draw(screen, 1)
+        rocket2.draw(screen, 2)
+        rocket3.draw(screen, 3)
         for i in range(len(self.dots_figure)):
             self.figures[i].draw(screen, self.figures[i])
         exit_if_i_need_it = [0, 0, 0]
@@ -229,7 +232,6 @@ class Manager():
         if exit_if_i_need_it == [1, 1, 1]:
             self.done2 = True
             self.done3 = True
-
             
     def handle_events(self, events):
         done2 = False
@@ -241,27 +243,17 @@ class Manager():
             
         return self.done2, self.done3
 
-centers_match = [[[199,99], [249,280], [191,164], [140, 205], [241, 206],
-                 [197,273],  [136,297], [277,318]],
+
+centers_match = [[[199, 99], [249, 280], [191, 164], [140, 205], [241, 206],
+                 [197, 273],  [136, 297], [277, 318]],
 
                  [[564, 317], [632, 315], [565, 380], [633, 379], [548, 453], 
                   [516, 506], [581, 498], [614, 517], [622, 462], [674, 481]],
                  
                  [[882, 82], [986, 74], [961, 150], [871, 160], [1067, 99],
                   [1065, 190], [887, 223], [899, 281], [974, 244]]]
-                 
-        
 
-#mgr = Manager(dots_figure)
 
 rocket1 = Schedule(1)
 rocket2 = Schedule(2)
 rocket3 = Schedule(3)
-#figure = Figure(dots=[[275, 485], [200, 435], [200, 485]])
-'''
-while not done:
-    clock.tick(10000)
-    mgr.draw(screen, centers_match)
-    done = mgr.handle_events(pg.event.get())
-    pg.display.flip()'''
-    
