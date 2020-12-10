@@ -2,6 +2,9 @@ import pygame as pg
 import numpy as np
 from random import randint
 
+'''
+набор констант 
+'''
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -20,6 +23,12 @@ SCREEN_SIZE = (1200, 600)
 
 
 pg.init()
+'''
+дале идут 3 функции, каждая из которых создает объект определенного типа и возвращает его координаты
+new_ball - выстрелы
+new_meteor - метеориты
+new_spaceship - корабль
+'''
 
 def new_ball(x, y):
     return {
@@ -27,22 +36,26 @@ def new_ball(x, y):
         'y': y,
     }
 
+
 def new_meteor():
     return {
         'x': 1240,
         'y': randint(40, 640),
     }
+
+
 def new_spaceship():
     return {
         'x': 40,
         'y': 300,
     }
 
+
 a = new_spaceship()
-q=30*60*3
+q = 30 * 60 * 3
+
 
 class Manager():
-    global A
     def __init__(self, screen):
         self.meteors = []
         self.strikes = []
@@ -58,10 +71,12 @@ class Manager():
         self.screen = screen
 
     def draw(self):
+        '''
+        функция отрисовки, сначала отрисовывает корабль, затем отрисовывает пули и метеориты, проходя циклом
+        по каждому элементу
+        '''
         SC = pg.image.load("space_forgame3.jpg")
         self.screen.blit(SC, (0, 0))
-
-
         for unit in self.meteors:
             unit['x'] -= 12
             SC1 = pg.image.load("qquop.png")
@@ -72,9 +87,10 @@ class Manager():
         SC1 = pg.image.load("spaceship.png")
         self.screen.blit(SC1, (a['x'], a['y']))
 
-
     def handle_events(self, events):
-
+        '''
+        считывает нажатия и зажатия клавиш, передает это программе
+        '''
         done = False
         for event in events:
             if event.type == pg.QUIT:
@@ -106,16 +122,18 @@ class Manager():
                     self.strike()
 
     def teleportation(self):
+        '''
+        если какая-то из клавиш движения зажата, то корабль начинает перемещаться в данном направлении
+        '''
         if self.up_key_pressed == True:
             a['y'] -= 8
             if a['y'] < 30:
-                a['y'] =30
+                a['y'] = 30
 
         if self.down_key_pressed == True:
             a['y'] += 8
             if a['y'] > 570:
                 a['y'] = 570
-
 
         if self.left_key_pressed == True:
             a['x'] -= 8
@@ -128,15 +146,26 @@ class Manager():
                 a['x'] = 1170
 
     def strike(self):
+        '''
+        в случае если нажат пробел созлает объект типа пуля в точке с кординатами корабля
+        '''
         self.strikes.append(new_ball(a['x'], a['y']+15))
 
     def lose(self):
+        '''
+        проверяет количество метеоритов которые пролетели за игрока, проходя каджый по циклу
+        если их больше определенного числа, то игрок проигрывает
+        '''
         for unit in self.meteors:
-            if unit['x'] > 0 and unit['x'] < 10 :
+            if unit['x'] > 0 and unit['x'] < 10:
                 self.lost += 1
 
-
     def timer(self):
+        '''
+        функция времени + функция отрисовки счета
+        по остатку от времени создает метеорит и выводит на экран количество метеоритов, что сбил человек
+        и количество пропущенных метеоритов
+        '''
         self.time -= 1
         if self.time % 10 == 0:
             self.meteors.append(new_meteor())
@@ -152,6 +181,10 @@ class Manager():
             self.crash = True
 
     def kill(self):
+        '''
+        проходя циклом по всем парам выстрел метеор сравнивает расстояние между ними через функцию check
+        если оно меньше фиксированной константы удаляет метеорит и выстрел
+        '''
         for i, ball in enumerate(self.strikes):
             for j, meteor in enumerate(self.meteors):
                 if self.check(ball, meteor) == 1:
@@ -159,23 +192,35 @@ class Manager():
                     self.meteors.pop(j)
                     self.calculate += 1
 
-
     def check(self, ball, meteor):
-        if (ball['x'] - meteor['x'])**2 + (ball['y'] - meteor['y'])**2< (40+3)**2:
+        '''
+        считает расстояние между данный метеоритом и данной пулей
+        '''
+        if (ball['x'] - meteor['x'])**2 + (ball['y'] - meteor['y'])**2 < (40+3)**2:
             return 1
 
     def zepopa(self):
+        '''
+        проходя циклом по всем метеоритам считает расстояние между каждым из них и кораблем
+        если расстояние меньше фиксированного, то происходит столкновение
+        т.е параметр столкновения становится равен правде
+        '''
         for meteor in self.meteors:
-            if (meteor['x']-a['x'])**2+(meteor['y']-a['y'])**2 < (20+30)**2:
+            if (meteor['x']-a['x'])**2+(meteor['y']-a['y'] - 15) ** 2 < (20+30) ** 2:
                 self.crash = True
 
-
     def end(self):
-        if self.win==True or self.crash==True:
+        '''
+        проверяет закончилась ли игра т.е смотрит уничтожил ли игрок нужное количество метеоритов
+        столкнулся с каким-нибудь из них, или пропустил их слишком много
+        '''
+        if self.win == True or self.crash == True:
             return 1
 
-
     def process(self, events):
+        '''
+        отвечает за процесс игры
+        '''
         done = self.handle_events(events)
         self.draw()
         self.teleportation()
@@ -186,14 +231,3 @@ class Manager():
         if self.end() == 1:
             done = True
         return done, self.win
-
-
-
-
-
-
-
-
-
-
-
