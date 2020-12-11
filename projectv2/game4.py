@@ -21,7 +21,7 @@ class Ball():
         где нет приборной панели
         '''
         if coord == None:
-            coord1 = [randint(50, 1150), randint(50, 550)]
+            coord1 = [randint(30, 1150), randint(50, 520)]
             
             if 300 < coord1[1] < 450:
                 coord1[1] += 130
@@ -51,9 +51,9 @@ q = 15 * 60
 
 
 class Manager():
-    def __init__(self, screen, time=30*60):
+    def __init__(self, screen):
         self.balls = []
-        self.time = time
+        self.timeq = 15*60
         self.screen = screen
         self.done = 0
 
@@ -62,16 +62,16 @@ class Manager():
         отвечает за генерацию огонька в зависимотсти от остатка числа при делении на 20
         за 5 секунд до конца игры перестает генерировать огни
         '''
-        self.time -= 1
-        if self.time % 20 == 0 and self.time > 60:
+        self.timeq -= 1
+        if self.timeq % 15 == 0 and self.timeq > 60:
             self.new_aim()
 
     def print_time(self):
         '''
         отвечате за отрисовку времени
         '''
-        a = (30*60 - self.time) / q
-        a = int(a * 600)
+        a = (15*60 - self.timeq) / q
+        a = int(a * 1200)
         pg.draw.rect(self.screen, WHITE, (0, 10, a, 10))
         f1 = pg.font.Font(None, 36)
         text1 = f1.render('TIME YOU HAVE', 1, WHITE)
@@ -88,15 +88,15 @@ class Manager():
         проверят в момент конца игры, что игрок потушил все пожары
         '''
         done = False
-        if self.time == 0:
+        if self.timeq == 0:
             if len(self.balls) == 0:
                 self.done = 1
             done = True
         return done
 
-    def process(self, events, screen):
+    def process(self, events):
         done = self.handle_events(events)
-        self.draw(screen)
+        self.draw()
         self.up_time()
         self.print_time()
         self.final_check()
@@ -104,14 +104,14 @@ class Manager():
            done = True
         return done, self.done
 
-    def draw(self, screen):
+    def draw(self):
         '''
         проходя по массиву с огоньков отрисовывает их
         '''
         SC = pg.image.load("menu.jpg")
-        screen.blit(SC, (0, 0))
+        self.screen.blit(SC, (0, 0))
         for ball in self.balls:
-            ball.draw(screen)
+            ball.draw(self.screen)
 
     def handle_events(self, events):
         done = False

@@ -66,7 +66,7 @@ class Timer():
             screen.fill(BLACK)
             f1 = pg.font.Font(None, 36)
             text1 = f1.render('You lose', 1, RED)
-            screen.blit(text1, (500, 300))
+            screen.blit(text1, (520, 300))
 
     def good_end(self):
         '''
@@ -81,7 +81,7 @@ class Timer():
             screen.fill(BLACK)
             f1 = pg.font.Font(None, 36)
             text1 = f1.render('You win', 1, RED)
-            screen.blit(text1, (500, 300))
+            screen.blit(text1, (520, 300))
 
 
 class Map():
@@ -237,19 +237,35 @@ class Manager():
         if self.up_key_pressed:
             if screen.get_at((self.hero.coord[0], self.hero.coord[1] - 37)) == GRAY or \
                     screen.get_at((self.hero.coord[0], self.hero.coord[1] - 37)) == YELLOW:
-                self.hero.coord[1] -= 2
+                if screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] - 37)) == GRAY or \
+                        screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] - 37)) == YELLOW:
+                    if screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] - 37)) == GRAY or \
+                            screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] - 37)) == YELLOW:
+                        self.hero.coord[1] -= 2
         if self.down_key_pressed:
             if screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37)) == GRAY or\
                     screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37)) == YELLOW:
-                self.hero.coord[1] += 2
+                if screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] + 25)) == GRAY or \
+                        screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] + 25)) == YELLOW:
+                    if screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] + 25)) == GRAY or \
+                            screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] + 25)) == YELLOW:
+                        self.hero.coord[1] += 2
         if self.left_key_pressed:
             if screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1])) == GRAY or \
                     screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1])) == YELLOW:
-                self.hero.coord[0] -= 2
+                if screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1] + 32)) == GRAY or \
+                        screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1] + 32)) == YELLOW:
+                    if screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1] - 27)) == GRAY or \
+                            screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1] - 27)) == YELLOW:
+                        self.hero.coord[0] -= 2
         if self.right_key_pressed:
             if screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1])) == GRAY or\
                     screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1])) == YELLOW:
-                self.hero.coord[0] += 2
+                if screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1] + 32)) == GRAY or \
+                        screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1] + 32)) == YELLOW:
+                    if screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1] - 27)) == GRAY or \
+                            screen.get_at((self.hero.coord[0] + 25, self.hero.coord[1] - 27)) == YELLOW:
+                        self.hero.coord[0] += 2
 
 
 pg.display.set_caption("TRY TO ESCAPE")
@@ -313,7 +329,7 @@ mgr1 = game1.Manager(50, screen)
 mgr2 = game2.Manager(dots_figure, screen)
 done2 = (False, False)
 
-mgr4 = game4.Manager(dots_figure, screen)
+mgr4 = game4.Manager(screen)
 done4 = (False, 0)
 
 mgr3 = experiment.Manager(screen)
@@ -358,7 +374,7 @@ while not done:
         pg.mixer.music.set_volume(0.1)
         while not done4[0]:
             clock.tick(30)
-            done4 = mgr4.process(pg.event.get(), screen)
+            done4 = mgr4.process(pg.event.get())
             pg.display.update() 
             mgr.time.change()
         if done4[1] == 1:

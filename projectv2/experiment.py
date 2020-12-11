@@ -167,7 +167,7 @@ class Manager():
         и количество пропущенных метеоритов
         '''
         self.time -= 1
-        if self.time % 10 == 0:
+        if self.time % 7 == 0:
             self.meteors.append(new_meteor())
         f1 = pg.font.Font(None, 36)
         text1 = f1.render('you done'+'' + str(self.calculate) + '/' + '50', 1, TOMATO)
