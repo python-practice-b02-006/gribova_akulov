@@ -17,6 +17,9 @@ GRAY = (255, 250, 205)
 RED = (255, 0, 0)
 YELLOW = (128, 0, 0)
 BROWN = (160, 82, 45)
+TOMATO = (255, 200, 181)
+SKYBLUE = (100, 149, 237)
+
 
 
 screen = pg.display.set_mode(SCREEN_SIZE)
@@ -323,17 +326,29 @@ centers_match = [[[199, 99], [249, 280], [191, 164], [140, 205], [241, 206],
 done = False
 mgr = Manager()
 
-done1 = (False, False)
+done1 = [False, False]
 mgr1 = game1.Manager(50, screen)
+phrase1_1 = pg.image.load("phrase/1.png")
+phrase1_2 = pg.image.load('phrase/2.1.png')
+phrase1_3 = pg.image.load("phrase/3.1.png")
 
 mgr2 = game2.Manager(dots_figure, screen)
-done2 = (False, False)
+done2 = [False, False]
+phrase2_1 = pg.image.load("phrase/1.4.png")
+phrase2_2 = pg.image.load('phrase/2.4.png')
+phrase2_3 = pg.image.load("phrase/3.4.png")
 
 mgr4 = game4.Manager(screen)
-done4 = (False, 0)
+done4 = [False, 0]
+phrase4_1 = pg.image.load("phrase/1.3.png")
+phrase4_2 = pg.image.load('phrase/2.3.png')
+phrase4_3 = pg.image.load("phrase/3.3.png")
 
 mgr3 = experiment.Manager(screen)
-done3 = (False, 0)
+done3 = [False, 0]
+phrase3_1 = pg.image.load("phrase/1.2.png")
+phrase3_2 = pg.image.load('phrase/2.2.png')
+phrase3_3 = pg.image.load("phrase/3.1.png")
 
 while not done:
     '''
@@ -348,6 +363,21 @@ while not done:
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
         while not done1[0]:
+            clock.tick(20)
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_SPACE:
+                        done1[0] = True  
+                if event.type == pg.QUIT:
+                    done1[0] = True
+            screen.fill(TOMATO)
+            screen.blit(phrase1_1,(50,100))
+            screen.blit(phrase1_2,(500,300))
+            screen.blit(phrase1_3,(300,500))
+            pg.display.update()
+            mgr.time.change()
+        done1[0] = False
+        while not done1[0]:
             clock.tick(120)
             done1 = mgr1.process(pg.event.get(), screen)
             pg.display.update()
@@ -359,6 +389,22 @@ while not done:
         pg.mixer.music.load('felicia.mp3')
         pg.mixer.music.play(-1)
         pg.mixer.music.set_volume(0.1)
+        while not done2[0]:
+            clock.tick(20)
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_SPACE:
+                        done2[0] = True  
+                if event.type == pg.QUIT:
+                    done2[0] = True
+            screen.fill((216, 191, 216))
+            screen.blit(phrase2_1,(50,100))
+            screen.blit(phrase2_2,(500,300))
+            screen.blit(phrase2_3,(300,500))
+            pg.display.update()
+            mgr.time.change()
+        done2[0] = False
+
         while not done2[0]:
             clock.tick(10000)
             mgr2.draw(screen, centers_match)
@@ -373,6 +419,21 @@ while not done:
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
         while not done4[0]:
+            clock.tick(20)
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_SPACE:
+                        done4[0] = True  
+                if event.type == pg.QUIT:
+                    done4[0] = True
+            screen.fill((152, 251, 152))
+            screen.blit(phrase4_1,(50,100))
+            screen.blit(phrase4_2,(500,300))
+            screen.blit(phrase4_3,(300,500))
+            pg.display.update()
+            mgr.time.change()
+        done4[0] = False
+        while not done4[0]:
             clock.tick(30)
             done4 = mgr4.process(pg.event.get())
             pg.display.update() 
@@ -384,6 +445,21 @@ while not done:
         pg.mixer.music.load('psy.mp3')
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
+        while not done3[0]:
+            clock.tick(20)
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_SPACE:
+                        done3[0] = True  
+                if event.type == pg.QUIT:
+                    done3[0] = True
+            screen.fill(SKYBLUE)
+            screen.blit(phrase3_1,(600,100))
+            screen.blit(phrase3_2,(100,300))
+            screen.blit(phrase1_3,(400,500))
+            pg.display.update()
+            mgr.time.change()
+        done3[0] = False
         while not done3[0]:
             clock.tick(30)
             done3 = mgr3.process(pg.event.get())
