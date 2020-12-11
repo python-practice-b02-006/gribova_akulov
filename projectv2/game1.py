@@ -13,6 +13,8 @@ A = []
 presents = [[100, 0], [550, 100], [1050, 150]]
 s = len(presents)
 B = []
+l = True
+number_pr = [0, 0, 0, 0]
 
 BLACK = (0, 0, 0)
 LSALMON = (255, 160, 122)
@@ -107,6 +109,7 @@ class Gun():
         self.power = minp
         self.active = False
         A = self.coord
+
     
     def draw(self, screen):
         gun_ = pg.image.load("gun.png").convert_alpha()
@@ -134,8 +137,11 @@ class Target():
             self.color = color
         else: self.color = TOMATO
         self.screen = screen
+        self.vidno = 0
 
     def draw(self, screen):
+        global l
+        self.vidno += 1
         pg.draw.rect(screen, self.color, (self.coord[0]*50, 50*self.coord[1], 50, 50))
         pg.draw.lines(screen, CADET, False, [(self.coord[0]*50, self.coord[1]*50), 
                                                (self.coord[0]*50+50, self.coord[1]*50),
@@ -150,7 +156,7 @@ class Target():
     
     def move_present(self, t_step=0.002):
         speed = 1
-        global B
+        global B, l
         money = pg.image.load("timeismoney.png").convert_alpha()
         for i in range(len(B)):
             if 50*B[i][1] < 400:
@@ -257,7 +263,7 @@ class Manager():
     def collide(self):
         collisions = []
         targets_c = []
-        global s, B
+        global s, B, number_pr
         for i, ball in enumerate(self.balls):
             for j, target in enumerate(self.targets):
                 if target.check_collision(ball):
@@ -266,14 +272,19 @@ class Manager():
                     ball.flip_vel([1, 0])
                     ball.flip_vel([0, 1]) 
         targets_c.sort()
-        for j in reversed(targets_c):
-            self.score_t.t_destr += 1
-            if j >= len(self.targets) - s:
-                s -= 1
-                self.score_t.t_destr += 8
-                B.append(self.targets[j].coord)
-                print(B)
-            self.targets.pop(j)
+        for j in reversed(targets_c):   
+            l = True
+            if j >= len(self.targets) - s: 
+                if number_pr[3-s] == 24: 
+                    s -= 1
+                    B.append(self.targets[j].coord)
+                    self.score_t.t_destr += 15
+                    self.targets.pop(j)
+                l = False
+                number_pr[3-s] += 1
+            if l == True or number_pr[3-s] == 25:
+                self.targets.pop(j)
+                self.score_t.t_destr += 1
         
 '''
 #screen = pg.display.set_mode(SIZE)

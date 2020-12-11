@@ -365,7 +365,6 @@ while not done:
     clock.tick(150)
     done = mgr.process(pg.event.get(), screen)[0]
     all_time += 1
-    print(all_time)
     if all_time - time1 > 100:
         done1 = [False, done1[1]]
     if 0 == mgr.process(pg.event.get(), screen)[1] and not done1[0]:
