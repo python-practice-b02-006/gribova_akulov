@@ -61,6 +61,8 @@ SLATE = (106, 90, 205)
 DARK = (72, 61, 109)
 BROWN = (139, 69, 19)
 GREY = (130, 130, 130)
+MICRO2 = (0, 128, 128)
+MICRO1 = (20, 20, 112)
 COLORS = [LSALMON, PEACH, LEMONE, SKYBLUE, TOMATO, GREY, CADET, BROWN]
 
 pg.init()
@@ -190,6 +192,8 @@ def match(centers_match, k):
 class Manager():
     def __init__(self, figcoords, screen):
         self.figures = []
+        self.l = 50
+        self.c = 50
         self.done2 = False
         self.dots_figure = figcoords
         self.screen = screen
@@ -220,15 +224,71 @@ class Manager():
                 if i == 0:
                     surf1 = font_1.render("GREAT!", False, GREY)
                     screen.blit(surf1, (100, 450))
+                    pg.draw.polygon(screen, MICRO1, [(self.l + 150, self.c), (self.l + 75, self.c + 75),
+                       (self.l + 75, self.c + 200), (self.l + 125, self.c + 200),
+                       (self.l + 50, self.c + 250), (self.l + 50, self.c + 300),
+                       (self.l + 125, self.c + 250), (self.l + 175, self.c + 250),
+                       (self.l + 250, self.c + 300), (self.l + 250, self.c + 250),
+                       (self.l + 175, self.c + 200), (self.l + 225, self.c + 200),
+                       (self.l + 225, self.c + 75), (self.l + 150, self.c)])
+                    pg.draw.lines(screen, MICRO2, False, [[30, 155], [170, 155], [210, 190], [330, 190]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[30, 194], [185, 194], [185, 80], [330, 80]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[30, 235], [200, 235], [200, 155], [330, 155]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[30, 275], [200, 275], [200, 320], [330, 320]], 3)                    
                     exit_if_i_need_it[0] = 1
+                    pg.draw.circle(screen, MICRO1, [330, 320], 5)
+                    pg.draw.circle(screen, MICRO1, [30, 155], 5)
+                    pg.draw.circle(screen, MICRO1, [30, 235], 5)
+                    pg.draw.circle(screen, MICRO1, [30, 194], 5)
+                    pg.draw.circle(screen, MICRO1, [30, 275], 5)
+                    pg.draw.circle(screen, MICRO1, [330, 190], 5)
+                    pg.draw.circle(screen, MICRO1, [330, 155], 5)
+                    pg.draw.circle(screen, MICRO1, [330, 80], 5)
                 if i == 1:
                     surf2 = font_1.render("AWESOME!!", False, GREY)              
                     screen.blit(surf2, (450, 140))
                     exit_if_i_need_it[1] = 1
+                    pg.draw.polygon(screen, MICRO1, [(self.l + 400 + 150, self.c + 200), (self.l+400 + 50, self.c+200 + 100),
+                       (self.l + 400 + 100, self.c + 200 + 150), (self.l + 400 + 50, self.c + 200 + 225),
+                       (self.l + 400 + 50, self.c + 200 + 300), (self.l + 400 + 100, self.c + 200 + 250),
+                       (self.l + 400 + 150, self.c + 200 + 300), (self.l + 400 + 200, self.c + 200 + 250),
+                       (self.l + 400 + 250, self.c + 200 + 300), (self.l + 400 + 250, self.c + 200 + 225),
+                       (self.l + 400 + 200, self.c + 200 + 150), (self.l + 400 + 250, self.c + 200 + 100),
+                       (self.l + 400 + 150, self.c + 200)])
+                    pg.draw.lines(screen, MICRO2, False, [[420, 350], [560, 350], [560, 425], [480, 545], [480, 580]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[450+136, 220], [450+136, 450], [522, 545], [522, 580]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[450+163, 220], [450+163, 450], [676, 545], [676, 580]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[780, 350], [640, 350], [640, 425], [720, 545], [720, 580]], 3)  
+                    pg.draw.circle(screen, MICRO1, [420, 350], 5)
+                    pg.draw.circle(screen, MICRO1, [450+136, 220], 5)
+                    pg.draw.circle(screen, MICRO1, [450+163, 220], 5)
+                    pg.draw.circle(screen, MICRO1, [480, 580], 5)
+                    pg.draw.circle(screen, MICRO1, [780, 350], 5)
+                    pg.draw.circle(screen, MICRO1, [522, 580], 5)
+                    pg.draw.circle(screen, MICRO1, [676, 580], 5)
+                    pg.draw.circle(screen, MICRO1, [720, 580], 5)
                 if i == 2:
                     surf3 = font_1.render("EXCITING!", False, GREY)
                     screen.blit(surf3, (850, 450))
                     exit_if_i_need_it[2] = 1
+                    pg.draw.polygon(screen, MICRO1, [(self.l + 800 + 225, self.c + 0), (self.l+800 + 0, self.c + 0),
+                       (self.l + 800 + 0, self.c + 225), (self.l+800 + 75, self.c + 300),
+                       (self.l + 800 + 75, self.c + 175), (self.l+800 + 175, self.c + 300),
+                       (self.l + 800 + 175, self.c + 175), (self.l+800 + 300, self.c + 175),
+                       (self.l + 800 + 175, self.c + 75), (self.l+800 + 300, self.c + 75),
+                       (self.l + 800 + 225, self.c + 0)])
+                    pg.draw.lines(screen, MICRO2, False, [[820, 150], [950, 150], [950, 20]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[820, 200], [1000, 200], [1000, 20]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[910, 380], [910, 110], [1180, 110]], 3)
+                    pg.draw.lines(screen, MICRO2, False, [[960, 380], [960, 160], [1180, 160]], 3)  
+                    pg.draw.circle(screen, MICRO1, [820, 150], 5)
+                    pg.draw.circle(screen, MICRO1, [820, 200], 5)
+                    pg.draw.circle(screen, MICRO1, [910, 380], 5)
+                    pg.draw.circle(screen, MICRO1, [960, 380], 5)
+                    pg.draw.circle(screen, MICRO1, [950, 20], 5)
+                    pg.draw.circle(screen, MICRO1, [1000, 20], 5)
+                    pg.draw.circle(screen, MICRO1, [1180, 110], 5)
+                    pg.draw.circle(screen, MICRO1, [1180, 160], 5)
         if exit_if_i_need_it == [1, 1, 1]:
             self.done2 = True
             self.done3 = True
