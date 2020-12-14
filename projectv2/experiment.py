@@ -156,9 +156,11 @@ class Manager():
         проверяет количество метеоритов которые пролетели за игрока, проходя каджый по циклу
         если их больше определенного числа, то игрок проигрывает
         '''
-        for unit in self.meteors:
-            if unit['x'] > 0 and unit['x'] < 10:
-                self.lost += 1
+        if len(self.meteors) > 0:
+            for i, ball in enumerate(self.meteors):
+                if self.meteors[i]['x'] < 0:
+                    self.lost += 1
+                    self.meteors.pop(i)
 
     def timer(self):
         '''

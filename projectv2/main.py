@@ -20,8 +20,6 @@ BROWN = (160, 82, 45)
 TOMATO = (255, 200, 181)
 SKYBLUE = (100, 149, 237)
 
-
-
 screen = pg.display.set_mode(SCREEN_SIZE)
 pg.init()
 pg.font.init()
@@ -224,7 +222,13 @@ class Manager():
                 elif event.key == pg.K_LEFT:
                     self.left_key_pressed = False
         return done
-    
+
+    def stop(self):
+        self.up_key_pressed = False
+        self.down_key_pressed = False
+        self.right_key_pressed = False
+        self.left_key_pressed = False
+
     def where_are_you(self):
         '''
         возвращает зашёл ли герой на одну из точек, если да, то говорит на какую
@@ -373,6 +377,7 @@ while not done:
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
         all_time -= 1
+        mgr.stop()
         while not done1[0]:
             clock.tick(20)
             all_time += 1
@@ -383,9 +388,9 @@ while not done:
                 if event.type == pg.QUIT:
                     done1[0] = True
             screen.fill(TOMATO)
-            screen.blit(phrase1_1,(50,100))
-            screen.blit(phrase1_2,(500,300))
-            screen.blit(phrase1_3,(300,500))
+            screen.blit(phrase1_1, (50, 100))
+            screen.blit(phrase1_2, (500, 300))
+            screen.blit(phrase1_3, (300, 500))
             pg.display.update()
             mgr.time.change()
         done1[0] = False
@@ -406,6 +411,7 @@ while not done:
         pg.mixer.music.play(-1)
         pg.mixer.music.set_volume(0.1)
         all_time -= 1
+        mgr.stop()
         while not done2[0]:
             clock.tick(20)
             all_time += 1
@@ -416,9 +422,9 @@ while not done:
                 if event.type == pg.QUIT:
                     done2[0] = True
             screen.fill((216, 191, 216))
-            screen.blit(phrase2_1,(50,100))
-            screen.blit(phrase2_2,(500,300))
-            screen.blit(phrase2_3,(300,500))
+            screen.blit(phrase2_1, (50, 100))
+            screen.blit(phrase2_2, (500, 300))
+            screen.blit(phrase2_3, (300, 500))
             pg.display.update()
             mgr.time.change()
         done2[0] = False
@@ -440,6 +446,7 @@ while not done:
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
         all_time -= 1
+        mgr.stop()
         while not done4[0]:
             clock.tick(20)
             all_time += 1
@@ -450,9 +457,9 @@ while not done:
                 if event.type == pg.QUIT:
                     done4[0] = True
             screen.fill((152, 251, 152))
-            screen.blit(phrase4_1,(50,100))
-            screen.blit(phrase4_2,(500,300))
-            screen.blit(phrase4_3,(300,500))
+            screen.blit(phrase4_1, (50, 100))
+            screen.blit(phrase4_2, (500, 300))
+            screen.blit(phrase4_3, (300, 300))
             pg.display.update()
             mgr.time.change()
         done4[0] = False
@@ -473,6 +480,7 @@ while not done:
         pg.mixer.music.play()
         pg.mixer.music.set_volume(0.1)
         all_time -= 1
+        mgr.stop()
         while not done3[0]:
             clock.tick(20)
             for event in pg.event.get():
@@ -483,9 +491,9 @@ while not done:
                     done3[0] = True
             screen.fill(SKYBLUE)
             all_time += 1
-            screen.blit(phrase3_1,(600,100))
-            screen.blit(phrase3_2,(100,300))
-            screen.blit(phrase1_3,(400,500))
+            screen.blit(phrase3_1, (600, 100))
+            screen.blit(phrase3_2, (100, 300))
+            screen.blit(phrase1_3, (400, 500))
             pg.display.update()
             mgr.time.change()
         done3[0] = False
