@@ -251,12 +251,12 @@ class Manager():
                             screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] - 37)) == YELLOW:
                         self.hero.coord[1] -= 2
         if self.down_key_pressed:
-            if screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37)) == GRAY or\
-                    screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37)) == YELLOW:
-                if screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] + 25)) == GRAY or \
-                        screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] + 25)) == YELLOW:
-                    if screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] + 25)) == GRAY or \
-                            screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] + 25)) == YELLOW:
+            if screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37 + 10)) == GRAY or\
+                    screen.get_at((self.hero.coord[0], self.hero.coord[1] + 37 + 10)) == YELLOW:
+                if screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] + 37 + 10)) == GRAY or \
+                        screen.get_at((self.hero.coord[0] + 23, self.hero.coord[1] + 37 + 10)) == YELLOW:
+                    if screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] + 37 + 10)) == GRAY or \
+                            screen.get_at((self.hero.coord[0] - 23, self.hero.coord[1] + 37 + 10)) == YELLOW:
                         self.hero.coord[1] += 2
         if self.left_key_pressed:
             if screen.get_at((self.hero.coord[0] - 25, self.hero.coord[1])) == GRAY or \
@@ -330,6 +330,10 @@ centers_match = [[[199, 99], [249, 280], [191, 164], [140, 205], [241, 206],
 '''
 done = False
 mgr = Manager()
+
+done_n = [[False, False], [False, False], [False, False], [False, False]]
+mgr_n = [game1.Manager(50, screen), game2.Manager(dots_figure, screen),
+         game4.Manager(screen), experiment.Manager(screen)]
 
 done1 = [False, False]
 mgr1 = game1.Manager(50, screen)
