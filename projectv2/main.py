@@ -336,7 +336,7 @@ done_n = [[False, False], [False, False], [False, False], 0, [False, False]]
 mgr_n = [game1.Manager(50, screen), game2.Manager(dots_figure, screen),
          game4.Manager(screen), experiment.Manager(screen)]
 music_n = ['fake_id.mp3', 'new_rules.mp3', 'psy.mp3', 0, 'felicia.mp3']
-ticks = [120, 30, 30, 0, 10000]
+ticks = [30, 30, 30, 0, 10000]
 timen = [0, 0, 0, 0, 0]
 phrase1_1 = pg.image.load("phrase/1.png")
 phrase1_2 = pg.image.load('phrase/2.1.png')
@@ -354,7 +354,7 @@ while not done:
     number = mgr.process(pg.event.get(), screen)[1]
     if type(number) == int:
         if all_time - timen[number] > 500:
-            done_n[number] = [False, done_n[number][1]]
+            done_n[number] = [False, False]
             check = 20
     if type(number) == int and check != number:
         if not done_n[number][0]:
@@ -386,8 +386,13 @@ while not done:
                 if number == 0:
                     done_n[number] = [mgr_n[number].process(pg.event.get(), screen)[0], mgr_n[number].process(pg.event.get(), screen)[1]]
                 elif number == 4:
-                     mgr_n[1].draw(screen, centers_match)
-                     done_n[number] = mgr_n[1].handle_events(pg.event.get())
+                    mgr_n[1].draw(screen, centers_match)
+                    done_n[number] = [mgr_n[1].handle_events(pg.event.get())[0], mgr_n[1].handle_events(pg.event.get())[1]]
+                elif number == 1:
+                    done_n[number] = [mgr_n[3].process(pg.event.get())[0], mgr_n[3].process(pg.event.get())[1]]
+                elif number == 2:
+                    
+                    done_n[number] = [mgr_n[2].process(pg.event.get())[0], mgr_n[2].process(pg.event.get())[1]]
                 pg.display.update()
                 mgr.time.change()
                 check = number

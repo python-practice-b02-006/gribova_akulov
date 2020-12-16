@@ -18,7 +18,8 @@ def mediana(a, b, c):
 
 SIZE = (1200, 600)
 b = ['ne_zanyato']
-
+f = 0
+ 
 dots_figure = [[[180, 588], [255, 513], [330, 588]],
               [[100, 569], [25, 519], [25, 569]],
               [[13, 392], [63, 517], [163, 392]],
@@ -202,6 +203,7 @@ class Manager():
         self.done3 = False
             
     def draw(self, screen, centers_match):
+        global f
         screen.blit(SC_IMG, (0, 0))
         screen.blit(SC_IMG, (337, 0))
         screen.blit(SC_IMG, (674, 0))
@@ -290,8 +292,12 @@ class Manager():
                     pg.draw.circle(screen, MICRO1, [1180, 110], 5)
                     pg.draw.circle(screen, MICRO1, [1180, 160], 5)
         if exit_if_i_need_it == [1, 1, 1]:
-            self.done2 = True
-            self.done3 = True
+            f += 1
+            surf4 = font_1.render("You completed the task :)", False, TOMATO)
+            screen.blit(surf4, (300, 10))
+            if f == 150:
+                self.done2 = True
+                self.done3 = True
             
     def handle_events(self, events):
         done2 = False
