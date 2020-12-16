@@ -373,6 +373,7 @@ while not done:
     pg.display.update()
     
 done = False
+font_1 = pg.font.SysFont("serif", 60)
 
 while not done:
     '''
@@ -392,7 +393,7 @@ while not done:
             pg.mixer.music.stop() 
             pg.mixer.music.load(music_n[number])
             pg.mixer.music.play()
-            pg.mixer.music.set_volume(0.1)
+            pg.mixer.music.set_volume(0.2)
             all_time -= 1
             mgr.stop()
             k1 = randint(30, 150)

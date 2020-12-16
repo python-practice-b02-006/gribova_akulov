@@ -232,4 +232,3 @@ class Manager():
             done = True
         return done, self.win
     
-pg.quit()
