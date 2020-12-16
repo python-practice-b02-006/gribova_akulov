@@ -330,11 +330,85 @@ centers_match = [[[199, 99], [249, 280], [191, 164], [140, 205], [241, 206],
 '''
 done = False
 mgr = Manager()
+all_time = 0
 
-done_n = [[False, False], [False, False], [False, False], [False, False]]
+done_n = [[False, False], [False, False], [False, False], 0, [False, False]]
 mgr_n = [game1.Manager(50, screen), game2.Manager(dots_figure, screen),
          game4.Manager(screen), experiment.Manager(screen)]
+music_n = ['fake_id.mp3', 'new_rules.mp3', 'psy.mp3', 0, 'felicia.mp3']
+ticks = [120, 30, 30, 0, 10000]
+timen = [0, 0, 0, 0, 0]
+phrase1_1 = pg.image.load("phrase/1.png")
+phrase1_2 = pg.image.load('phrase/2.1.png')
+phrase1_3 = pg.image.load("phrase/3.1.png")
+check = 20
 
+while not done:
+    '''
+    в зависимости от положения игрока на карте запускает минигру
+    если игрок прошел миниигру то увеличивает счетчик миниигр на 1
+    '''
+    clock.tick(150)
+    done = mgr.process(pg.event.get(), screen)[0]
+    all_time += 1
+    number = mgr.process(pg.event.get(), screen)[1]
+    if type(number) == int:
+        if all_time - timen[number] > 500:
+            done_n[number] = [False, done_n[number][1]]
+            check = 20
+    if type(number) == int and check != number:
+        if not done_n[number][0]:
+            pg.mixer.music.stop() 
+            pg.mixer.music.load(music_n[number])
+            pg.mixer.music.play()
+            pg.mixer.music.set_volume(0.1)
+            all_time -= 1
+            mgr.stop()
+            while not done_n[number][0]:
+                clock.tick(20)
+                all_time += 1
+                for event in pg.event.get():
+                    if event.type == pg.KEYDOWN:
+                        if event.key == pg.K_SPACE:
+                            done_n[number][0] = True  
+                    if event.type == pg.QUIT:
+                        done_n[number][0] = True
+                screen.fill(TOMATO)
+                screen.blit(phrase1_1, (50, 100))
+                screen.blit(phrase1_2, (500, 300))
+                screen.blit(phrase1_3, (300, 500))
+                pg.display.update()
+                mgr.time.change()
+            done_n[number][0] = False
+            while not done_n[number][0]:
+                all_time += 1
+                clock.tick(ticks[number])
+                if number == 0:
+                    done_n[number] = [mgr_n[number].process(pg.event.get(), screen)[0], mgr_n[number].process(pg.event.get(), screen)[1]]
+                elif number == 4:
+                     mgr_n[1].draw(screen, centers_match)
+                     done_n[number] = mgr_n[1].handle_events(pg.event.get())
+                pg.display.update()
+                mgr.time.change()
+                check = number
+            if done_n[number][1] == True:
+                A += 1
+        timen[number] = all_time
+    pg.display.update()
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 done1 = [False, False]
 mgr1 = game1.Manager(50, screen)
 phrase1_1 = pg.image.load("phrase/1.png")
@@ -363,13 +437,13 @@ phrase3_2 = pg.image.load('phrase/2.2.png')
 phrase3_3 = pg.image.load("phrase/3.1.png")
 time3 = 0
 
-all_time = 0
+
 
 while not done:
     '''
-    в зависимости от положения игрока на карте запускает минигру
-    если игрок прошел миниигру то увеличивает счетчик миниигр на 1
-    '''
+#    в зависимости от положения игрока на карте запускает минигру
+#    если игрок прошел миниигру то увеличивает счетчик миниигр на 1
+'''
     clock.tick(150)
     done = mgr.process(pg.event.get(), screen)[0]
     all_time += 1
@@ -512,5 +586,5 @@ while not done:
         time3 = all_time
 
     pg.display.update()
-
+'''
 pg.quit()
